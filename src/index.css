@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Noto Sans Thai Looped";
+  src: url("/fonts/noto_sans/NotoSansThaiLooped-Regular.ttf") format("truetype");
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Noto Sans Thai Looped", sans-serif !important;
+}
+
+@layer base {
+  * {
+    font-family: "Noto Sans Thai Looped", sans-serif !important;
+  }
+  h1 {
+    font-size: clamp(1.5rem, 10vw, 2rem);
+    @apply leading-10;
+  }
+
+  h2 {
+    font-size: clamp(1rem, 10vw, 1.5rem);
+    @apply text-base leading-8;
+  }
+
+  h3 {
+    @apply text-[16px] leading-6;
+  }
+
+  label {
+    @apply text-[16px] leading-6;
+  }
+
+  p {
+    @apply text-[16px];
+  }
+}
+
+@layer components {
+  /* layout */
+  main {
+    @apply w-full flex justify-center;
+  }
+  main .container-layout {
+    @apply container min-h-[calc(100svh_-_60px)] px-5 md:px-0;
+  }
+  main .container-main {
+    @apply container min-h-svh flex justify-center px-5 md:px-0;
+  }
+  .warpper {
+    @apply flex flex-wrap items-center justify-center;
+  }
+
+  /* main layout admin */
+  .layout-center {
+    @apply flex items-center justify-center;
+  }
+  .layout-main {
+    @apply w-full mt-5;
+  }
+  .layout-head {
+    @apply w-full flex flex-wrap items-center justify-between;
+  }
+  .layout-filter {
+    @apply mb-5 flex flex-wrap gap-y-5;
+  }
+  .layout-filter-btn {
+    @apply w-full xl:w-fit flex justify-center items-end gap-3;
+  }
+  .layout-contents {
+    @apply w-full overflow-auto;
+  }
+  .layout-pagin {
+    @apply w-full flex flex-wrap justify-end mt-5;
+  }
+  .pad-main {
+    @apply px-2 space-y-1;
+  }
+
+  /* card */
+  .card {
+    @apply bg-white flex flex-wrap w-full max-w-4xl shadow-sm rounded-2xl overflow-hidden;
+  }
+  .card h1 {
+    @apply text-center;
+  }
+  .card .card-image {
+    @apply w-2/5 hidden md:grid grid-cols-1;
+  }
+  .card .banner-image {
+    @apply object-contain hidden md:block min-h-full rounded-2xl;
+  }
+  .card .form {
+    @apply grow p-10;
+  }
+  .logo {
+    @apply !w-10 !h-10;
+  }
+  .profile {
+    @apply logo rounded-full !border-2 border-gray-300;
+  }
+
+  /* icon btn */
+  .icon-btn {
+    @apply w-4 h-4 !mr-2 my-auto;
+  }
+}
