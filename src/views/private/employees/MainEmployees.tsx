@@ -4,26 +4,26 @@ import { Button, Input, Pagination, Table } from 'antd';
 import { Fragment, useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { SearchOutlined } from "@ant-design/icons";
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 
-type IFormData = {
-  search: string;
-}
+// type IFormData = {
+//   search: string;
+// }
 
 function MainEmployees() {
-  const dateNow = dayjs(new Date()?.toISOString());
-  const [data, setData] = useState<any>([]);
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<IFormData>({
-    search: "",
-  })
-  const [pagin, setPagin] = useState<IPagin>({
+  // const dateNow = dayjs(new Date()?.toISOString());
+  // const [data, setData] = useState<any>([]);
+  // const [loading, setLoading] = useState(false);
+  // const [formData, setFormData] = useState<IFormData>({
+  //   search: "",
+  // })
+  const [pagin, /*setPagin*/] = useState<IPagin>({
     pageNumber: 1,
     pageSize: 10,
     totalPages: 1,
     totalRecord: 0
   });
-  
+
   return (
     <Fragment>
       <div className="layout-main">
@@ -86,9 +86,9 @@ function MainEmployees() {
         </div>
         <div className="layout-pagin">
           <Pagination
-            onChange={(pageNumber, pageSize) => {
-              // fetchData(pageNumber, pageSize, formData.search, formData.month);
-            }}
+            // onChange={(pageNumber, pageSize) => {
+            // fetchData(pageNumber, pageSize, formData.search, formData.month);
+            // }}
             total={pagin.totalRecord}
             current={pagin.pageNumber}
             pageSize={pagin.pageSize}
