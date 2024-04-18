@@ -1,9 +1,9 @@
 import { BrowserRouter } from "react-router-dom";
 import { StyleProvider } from "@ant-design/cssinjs";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, App as Antd } from "antd";
 import RoutesControl from "@/routes/RoutesControl";
 // config date th
-import locale from 'antd/locale/th_TH';
+import locale from "antd/locale/th_TH";
 import "dayjs/locale/th";
 // css
 import "./index.css";
@@ -17,15 +17,17 @@ function App() {
     },
   };
   return (
-    <ConfigProvider
+    <ConfigProvider 
       locale={locale}
-      theme={theme}
+      theme={{...theme}}
     >
-      <StyleProvider hashPriority="high">
-        <BrowserRouter>
-          <RoutesControl />
-        </BrowserRouter>
-      </StyleProvider>
+      <Antd>
+        <StyleProvider hashPriority="high">
+          <BrowserRouter>
+            <RoutesControl />
+          </BrowserRouter>
+        </StyleProvider>
+      </Antd>
     </ConfigProvider>
   )
 }

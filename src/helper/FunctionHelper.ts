@@ -62,3 +62,17 @@ export function ConvertToDateISOToThai(timestamp: string): string {
 
   return formattedDate;
 }
+
+export function FormatPhoneNumber(phoneNumber: string) {
+  // Remove all non-digit characters from the phone number
+  const cleaned = phoneNumber.replace(/\D/g, '');
+
+  // Check if the cleaned phone number has 10 digits (assuming it's for a specific country)
+  if (cleaned.length === 10) {
+    // Format the phone number as (XXX) XXX-XXXX
+    return cleaned.substring(0, 3) + '-' + cleaned.substring(3, 6) + '-' + cleaned.substring(6);
+  } else {
+    // If the phone number doesn't have 10 digits, return it as is
+    return phoneNumber;
+  }
+}

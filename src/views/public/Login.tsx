@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Form, Input, Button, Image, Alert, message, Typography, Checkbox } from "antd";
+import { Link, useNavigate, } from "react-router-dom";
+import { Form, Input, Button, Image, Alert, Typography, Checkbox, App } from "antd";
 import Banner from "@/assets/images/banners/banner.jpg"
 import { AuthLogin } from "@/services/Auth.Services";
 import useAuthStore from "@/store/authStore";
@@ -8,6 +8,7 @@ import { IToken } from "@/types/global";
 
 export const Login = () => {
   const navigate = useNavigate();
+  const { message } = App.useApp();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
@@ -68,13 +69,11 @@ export const Login = () => {
                     { required: true, message: "กรุณากรอกอีเมลของคุณ!" },
                   ]}
                 >
-                  <div className="flex w-full">
-                    <Input
-                      className="border rounded p-2"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                    />
-                  </div>
+                  <Input
+                    className="border rounded p-2"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -118,7 +117,7 @@ export const Login = () => {
                   <Typography.Text code>{"Admin -> admin@maxl3oss.com:admin ==>"}
                     <Checkbox
                       onChange={() => {
-                        handleSubmitByPass("admin@maxl3oss.com", "admin");
+                        handleSubmitByPass("admin@gmail.com", "admin");
                       }}>{"<== กดที่นี่"}
                     </Checkbox>
                   </Typography.Text>

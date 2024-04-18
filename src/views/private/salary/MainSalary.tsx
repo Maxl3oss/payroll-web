@@ -154,7 +154,7 @@ function MainSalary() {
         </div>
         <div className="layout-filter">
           <div className="w-full lg:w-1/2 xl:w-1/3 pad-main">
-            <label htmlFor="search">ค้นหา</label>
+            <div>ค้นหา</div>
             <Input
               name="search"
               onChange={handleChange}
@@ -164,7 +164,7 @@ function MainSalary() {
             />
           </div>
           <div className="w-full lg:w-1/2 xl:w-1/6 pad-main">
-            <label htmlFor="date">ช่วงเวลา</label>
+            <div>ช่วงเวลา</div>
             <DatePickerTH
               name="date"
               picker="month"
@@ -174,7 +174,7 @@ function MainSalary() {
           </div>
           <div className="layout-filter-btn">
             <Button
-              onClick={() => fetchData(pagin.pageNumber, pagin.pageSize, formData.search, formData.month)}
+              onClick={() => fetchData(1, pagin.pageSize, formData.search, formData.month)}
               type="primary"
             >
               <i className="fa-solid fa-magnifying-glass icon-btn"></i>
@@ -192,7 +192,7 @@ function MainSalary() {
             </Button>
           </div>
         </div>
-        <div className="flex flex-wrap gap-y-2 items-end justify-between my-1">
+        <div className="layout-tabletop">
           <span className="font-semibold">ทั้งหมด {pagin.totalRecord} รายการ</span>
           <div className="grow flex justify-end gap-3">
             <NavLink to="/salary/form">

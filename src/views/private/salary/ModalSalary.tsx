@@ -1,5 +1,5 @@
 import PDFSalary from '@/components/pdf/PDFSalary'
-import { Button, Form, message, Modal, Popconfirm } from 'antd'
+import { App, Button, Form, Modal, Popconfirm } from 'antd'
 import { Fragment, useState } from 'react'
 import { ISalary } from './MainSalary';
 import DatePickerTH from '@/components/DatePickerTH';
@@ -20,6 +20,7 @@ type Props = {
 }
 
 function ModalSalary({ dataModal, setDataModal, openDelete, closeDelete, onFetch }: Props) {
+  const { message } = App.useApp();
   const [month, setMonth] = useState("");
   const [form] = Form.useForm();
 

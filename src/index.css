@@ -68,6 +68,9 @@ body {
   .layout-filter {
     @apply mb-5 flex flex-wrap gap-y-5;
   }
+  .layout-tabletop {
+    @apply flex flex-wrap gap-y-2 items-end justify-between my-1 min-h-9;
+  }
   .layout-filter-btn {
     @apply w-full xl:w-fit flex justify-center items-end gap-3;
   }
@@ -78,7 +81,7 @@ body {
     @apply w-full flex flex-wrap justify-end mt-5;
   }
   .pad-main {
-    @apply px-2 space-y-1;
+    @apply !px-2;
   }
 
   /* card */
@@ -89,7 +92,7 @@ body {
     @apply text-center;
   }
   .card .card-image {
-    @apply w-2/5 hidden md:grid grid-cols-1;
+    @apply w-2/5 hidden lg:grid grid-cols-1;
   }
   .card .banner-image {
     @apply object-contain hidden md:block min-h-full rounded-2xl;

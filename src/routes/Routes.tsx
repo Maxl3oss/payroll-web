@@ -8,8 +8,9 @@ import Login from "@/views/public/Login";
 import NoPage from "@/views/public/NoPage";
 import MainSalary from "@/views/private/salary/MainSalary";
 import FormSalary from "@/views/private/salary/FormSalary";
-import MainEmployees from "@/views/private/employees/MainEmployees";
+import MainUser from "@/views/private/ีuser/MainUser";
 import MainSlip from "@/views/private/slip/MainSlip";
+import FormUser from "@/views/private/ีuser/FormUser";
 
 const Routes = [
   {
@@ -32,7 +33,8 @@ const Routes = [
       { path: "salary", name: "เงินเดือน", element: <MainSalary /> },
       { path: "salary/form", name: "เงินเดือน/เพิ่มข้อมูล", element: <FormSalary /> },
 
-      { path: "employees", name: "พนักงาน", element: <MainEmployees /> },
+      { path: "user", name: "ผู้ใช้งาน", element: <MainUser /> },
+      { path: "user/update", name: "ผู้ใช้งาน/แก้ไขข้อมูล", element: <FormUser /> },
 
       // { path: "salary/form/test", name: "เงินเดือน/หน้าฟอร์ม/ทดสอบ", element: <FormSalary /> },
       // { path: "create", name: "ฟอร์ม", element: <FormProduct /> },
@@ -44,8 +46,11 @@ const Routes = [
     element: <MainPublicLayout />,
     children: [
       { path: "", name: "", element: <Navigate to="/slip" /> },
-      { path: "slip", name: "ออกใบเสร็จ", element: <MainSlip /> },
       { path: "*", name: "", element: <NoPage /> },
+      
+      { path: "slip", name: "ออกสลิปเงินเดือน", element: <MainSlip /> },
+      
+      { path: "profile", name: "โปรไฟล์", element: <FormUser /> },
     ]
   }
 ];

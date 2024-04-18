@@ -108,7 +108,7 @@ function MainSlip() {
     <Fragment>
       <div className="layout-main">
         <div className="layout-head">
-          <h1>ออกใบเสร็จ</h1>
+          <h1>ออกสลิปเงินเดือน</h1>
         </div>
         <div className="layout-filter">
           <div className="w-full lg:w-1/3 pad-main">
@@ -122,7 +122,7 @@ function MainSlip() {
           </div>
           <div className="!lg:w-fit layout-filter-btn">
             <Button
-              onClick={() => fetchData(user?.id ?? "", pagin.pageNumber, pagin.pageSize, month)}
+              onClick={() => fetchData(user?.id ?? "", 1, pagin.pageSize, month)}
               type="primary"
             >
               ค้นหา

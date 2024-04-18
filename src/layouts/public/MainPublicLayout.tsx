@@ -20,8 +20,8 @@ const MainPublicLayout: React.FC = () => {
   const { token: { colorBgContainer, borderRadiusLG }, } = theme.useToken();
 
   const isActive = useMemo(() => {
-    return filterMenu?.filter(item => item.path === pathName)[0]?.key ?? "";
-  }, [pathName, filterMenu]);
+    return filterMenu?.filter(item => item.path === pathName)[0]?.key ?? (roleUser === "admin" ? "1" : "4");
+  }, [pathName, filterMenu, roleUser]);
 
   return (
     <Layout>

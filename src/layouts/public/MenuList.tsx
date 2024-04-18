@@ -22,14 +22,22 @@ const MenuList = [
     "key": "3",
     "role": ["admin"],
     "icon": <i className="fa-solid fa-user" />,
-    "path": "/employees",
-    "label": "พนักงาน"
-  }, {
+    "path": "/user",
+    "label": "ผู้ใช้งาน"
+  },
+  {
     "key": "4",
     "role": ["user"],
     "icon": <i className="fa-solid fa-file-invoice" />,
     "path": "/slip",
     "label": "ออกใบเสร็จ"
+  },
+  {
+    "key": "5",
+    "role": ["user"],
+    "icon": <i className="fa-solid  fa-user" />,
+    "path": "/profile",
+    "label": "โปรไฟล์"
   }
 ];
 

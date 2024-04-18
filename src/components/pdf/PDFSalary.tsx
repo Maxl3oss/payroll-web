@@ -93,9 +93,11 @@ function PDFSalary({ data }: Props) {
     }, 5000)
   }, []);
 
+  //  ำ to ํ + า
   const formatName = (name: string) => (
     name.replace("ำ", "ํา")
   );
+
   return (
     <Fragment>
       {isLoading
@@ -110,8 +112,8 @@ function PDFSalary({ data }: Props) {
         <Document
           onRender={() => setIsLoading(false)}
         >
-          <Page size="A4" orientation="landscape" style={styles.page}>
-            <View style={[{ width: "50%", height: "100%", padding: "10mm 15mm", border: 1 }]}>
+          <Page size="A4" style={styles.page}>
+            <View style={[{ width: "100%", height: "100%", padding: "10mm 15mm" }]}>
               <View style={[styles.col, { marginBottom: "10mm" }]}>
                 <View style={styles.sectionImage}>
                   <Image style={styles.imageLogo} src={PhuketLogo} cache={false} />

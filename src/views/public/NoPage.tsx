@@ -6,7 +6,6 @@ function NoPage() {
       status="404"
       title="404"
       subTitle="ขออภัย ไม่พบหน้าเว็บไซต์ที่คุณต้องการ"
-    // extra={<Button type="primary">Dashboard</Button>}
     />
   )
 }

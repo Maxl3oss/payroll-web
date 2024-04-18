@@ -16,21 +16,27 @@ export type IRole = {
   name: string;
 }
 
-export type IUser = {
-  id: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at?: string;
-  prefix_id: number;
-  prefix: IPrefix;
-  f_name: string;
-  l_name: string;
-  email: string;
-  password: string;
-  role_id: number;
-  role: IRole;
+export type Role = {
+	id: number;
+	name: string;
 }
 
+export type IUser = {
+	id: string;
+	created_at: string;
+	updated_at: string;
+	deleted_at?: string;
+	full_name: string;
+	email: string;
+	taxid: string;
+	mobile: string;
+	role_id: number;
+	role: Role;
+}
+
+export interface RootObject {
+	0: 0;
+}
 export type IToken = {
   access: string;
   refresh: string;

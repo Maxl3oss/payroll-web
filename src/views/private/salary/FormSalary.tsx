@@ -2,7 +2,7 @@ import DatePickerTH from "@/components/DatePickerTH";
 import UploadDragger from "@/components/UploadDragger";
 import { ValidateFileType } from "@/helper/FunctionHelper";
 import { UploadSalary } from "@/services/Salary.Serivces";
-import { Button, Form, GetProp, message, UploadProps } from "antd";
+import { App, Button, Form, GetProp, UploadProps } from "antd";
 import { DatePickerProps, UploadFile } from "antd/lib";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -17,18 +17,19 @@ type IFormData = {
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 function FormSalary() {
+  const { message } = App.useApp();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const dateNow = dayjs(new Date()?.toISOString());
+  const dateNow = dayjs();
   const [formData, setFormData] = useState<IFormData>({
-    month: dateNow?.toISOString(),
+    month: dateNow.toISOString(),
     fileList: [],
   });
 
   const onChangeDate: DatePickerProps["onChange"] = (date) => {
     setFormData({
       ...formData,
-      month: date?.toISOString(),
+      month: date.toISOString(),
     });
   };
 
@@ -45,11 +46,18 @@ function FormSalary() {
     const res = await UploadSalary(dataSend);
     setLoading(false);
     if (res && res.statusCode === 200 && res.taskStatus) {
+      // clear 
+      setFormData({
+        month: "",
+        fileList: [],
+      })
+
+      // move
       message.success("บันทึกข้อมูลสำเร็จ!");
       navigate("/salary");
       return;
     }
-    
+
     message.error("บันทึกข้อมูลไม่สำเร็จ! => " + res?.message ?? "" + "!");
   };
 
@@ -59,7 +67,7 @@ function FormSalary() {
         <div className="layout-head">
           <h1>เพิ่มข้อมูลเงินเดือน</h1>
         </div>
-        <Form initialValues={{ month: dateNow }} layout="vertical" onFinish={handleSubmit}>
+        <Form initialValues={{ "month": dateNow }} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
             label="ช่วงเวลา"
             name="month"
@@ -69,14 +77,24 @@ function FormSalary() {
             <DatePickerTH
               picker="month"
               onChange={onChangeDate}
-              value={formData.month !== "" ? dayjs(formData?.month) : dateNow}
 
             />
           </Form.Item>
           <Form.Item
             label="อัปโหลดไฟล์"
             name="fileList"
-            rules={[{ required: !(formData.fileList.length > 0), message: "กรุณาอัปโหลดอย่างน้อย 1 ไฟล์" }]}
+            rules={[
+              { required: true, message: "" },
+              () => ({
+                validator() {
+                  if (formData.fileList.length > 0) {
+                    return Promise.resolve();
+                  } else {
+                    return Promise.reject(new Error("กรุณาอัปโหลดอย่างน้อย 1 ไฟล์"));
+                  }
+                },
+              }),
+            ]}
             className="w-full pad-main"
             extra="รองรับเฉพาะไฟล์ (excel)"
           >
@@ -86,11 +104,7 @@ function FormSalary() {
               beforeUpload={(file: UploadFile) => {
                 const isAllowedType = ValidateFileType(file, "xlsx");
                 if (!isAllowedType) {
-                  setFormData(prev => ({
-                    ...prev,
-                    fileList: [...prev.fileList]
-                  }))
-                  message.warning(`${file.name} กรุณาอัปโหลดไฟล์เฉพาะ xlsx`);
+                  message.warning(`กรุณาอัปโหลดเฉพาะไฟล์ Excel (.xlsx)`);
                   return false;
                 }
                 setFormData(prev => ({
@@ -111,12 +125,14 @@ function FormSalary() {
             />
           </Form.Item>
           <div className="flex items-center justify-center gap-x-5 mt-20">
-            <Button loading={loading} type="primary" htmlType="submit">บันทึก</Button>
+            <Button loading={loading} type="primary" htmlType="submit">
+              บันทึก
+            </Button>
             <Button
               htmlType="reset"
               onClick={() => {
                 setFormData({
-                  month: dateNow?.toISOString(),
+                  month: dateNow.toISOString(),
                   fileList: [],
                 })
               }}>
