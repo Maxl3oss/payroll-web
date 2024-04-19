@@ -63,11 +63,11 @@ function Dashboard() {
     if (data.length <= 0) return [] as Received[];
     const generatedData: Received[] = [];
 
-    for (let month = 0; month <= 11; month++) {
+    for (let month = 1; month <= 12; month++) {
       let found = false;
       for (const entry of data) {
         if (entry.month === month) {
-          entry.month_name = ConvertToDateISOToThai(new Date(entry.year, entry.month).toISOString(), "MMMM");
+          entry.month_name = ConvertToDateISOToThai(new Date(entry.year, entry.month - 1).toISOString(), "MMMM");
           generatedData.push(entry);
           found = true;
           break;
@@ -75,7 +75,7 @@ function Dashboard() {
       }
       if (!found) {
         generatedData.push({
-          year: data[0].year, month, sum: 0.001, month_name: ConvertToDateISOToThai(new Date(data[0].year, month).toISOString(), "MMMM")
+          year: data[0].year, month, sum: 0.001, month_name: ConvertToDateISOToThai(new Date(data[0].year, month - 1).toISOString(), "MMMM")
         });
       }
     }
