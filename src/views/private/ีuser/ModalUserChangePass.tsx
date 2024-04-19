@@ -86,11 +86,10 @@ function ModalUserChangePass({ uid, open, isProfile, setOpen }: Props) {
               name="confirm_password"
               dependencies={["password"]}
               rules={[
+                { required: true, message: "กรุณากรอกยืนยันรหัสผ่าน" },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
-                    if (value === "") {
-                      return Promise.reject(new Error("กรุณากรอกยืนยันรหัสผ่าน!"));
-                    } else if ((getFieldValue("password")) !== value) {
+                    if ((getFieldValue("password")) !== value && value !== "") {
                       return Promise.reject(new Error("รหัสผ่านไม่ตรงกัน!"));
                     }
                     return Promise.resolve();
