@@ -11,6 +11,7 @@ import FormSalary from "@/views/private/salary/FormSalary";
 import MainUser from "@/views/private/ีuser/MainUser";
 import MainSlip from "@/views/private/slip/MainSlip";
 import FormUser from "@/views/private/ีuser/FormUser";
+import ResetPassword from "@/views/public/ResetPassword";
 
 const Routes = [
   {
@@ -19,6 +20,7 @@ const Routes = [
     children: [
       { path: "*", name: "", element: <Navigate to="/login" /> },
       { path: "login", name: "เข้าสู่ระบบ", element: <Login /> },
+      { path: "reset_password", name: "เข้าสู่ระบบ", element: <ResetPassword /> },
     ],
   },
   {

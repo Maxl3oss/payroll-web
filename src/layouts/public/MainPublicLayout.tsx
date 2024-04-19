@@ -62,7 +62,7 @@ const MainPublicLayout: React.FC = () => {
                 }}
               />
               <div className="layout-center gap-3 pr-6">
-                <img className="profile" src={Logo} />
+                {/* <img className="profile" src={Logo} /> */}
                 <Button
                   danger
                   type="primary"

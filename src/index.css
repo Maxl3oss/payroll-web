@@ -24,7 +24,7 @@ body {
 
   h2 {
     font-size: clamp(1rem, 10vw, 1.5rem);
-    @apply text-base leading-8;
+    @apply leading-8;
   }
 
   h3 {
@@ -36,7 +36,7 @@ body {
   }
 
   p {
-    @apply text-[16px];
+    @apply text-base;
   }
 }
 
@@ -88,6 +88,10 @@ body {
   .card {
     @apply bg-white flex flex-wrap w-full max-w-4xl shadow-sm rounded-2xl overflow-hidden;
   }
+  .card-sm {
+    @apply bg-white flex flex-wrap w-full max-w-2xl shadow-sm rounded-2xl overflow-hidden;
+  }
+  .card-sm h1,
   .card h1 {
     @apply text-center;
   }
@@ -97,6 +101,7 @@ body {
   .card .banner-image {
     @apply object-contain hidden md:block min-h-full rounded-2xl;
   }
+  .card-sm .form,
   .card .form {
     @apply grow p-10;
   }

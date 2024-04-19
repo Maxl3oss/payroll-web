@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { Link, useNavigate, } from "react-router-dom";
-import { Form, Input, Button, Image, Alert, Typography, Checkbox, App } from "antd";
+import { Form, Input, Button, Image, Alert, App } from "antd";
 import Banner from "@/assets/images/banners/banner.jpg"
 import { AuthLogin } from "@/services/Auth.Services";
 import useAuthStore from "@/store/authStore";
@@ -17,21 +17,6 @@ export const Login = () => {
   const handleSubmit = async () => {
     setMsg("");
     const dataSend = { "email": username, "password": password };
-    const res = await AuthLogin(dataSend);
-    if (res && res.statusCode === 200 && res.taskStatus) {
-      message.success("ยินดีต้อนรับ");
-      const token: IToken = res.data.token;
-      setUser(res.data.user);
-      setTokens(token.access, token.refresh);
-      navigate("/");
-      return;
-    }
-    setMsg(res?.message ?? "");
-  }
-
-  const handleSubmitByPass = async (u: string, p: string) => {
-    setMsg("");
-    const dataSend = { "email": u, "password": p };
     const res = await AuthLogin(dataSend);
     if (res && res.statusCode === 200 && res.taskStatus) {
       message.success("ยินดีต้อนรับ");
@@ -105,30 +90,13 @@ export const Login = () => {
                 </Form.Item>
 
                 <Form.Item>
-                  <p className="mt-3 text-center text-gray-600">
-                    ยังไม่มีบัญชีใช่หรือไม่?{" "}
-                    <Link to="/register" className="text-blue-main">
-                      สมัครสมาชิก
+                  <p className="text-end text-gray-600">
+                    ลืมรหัสผ่านใช่หรือไม่?{" "}
+                    <Link to="/reset_password" className="text-blue-main">
+                      ลืมรหัสผ่าน
                     </Link>
                   </p>
                 </Form.Item>
-
-                <div className="flex flex-col items-end">
-                  <Typography.Text code>{"Admin -> admin@maxl3oss.com:admin ==>"}
-                    <Checkbox
-                      onChange={() => {
-                        handleSubmitByPass("admin@gmail.com", "admin");
-                      }}>{"<== กดที่นี่"}
-                    </Checkbox>
-                  </Typography.Text>
-                  <Typography.Text code>{"User -> wiwatmuang@gmail.com:0894751377 ==>"}
-                    <Checkbox
-                      onChange={() => {
-                        handleSubmitByPass("wiwatmuang@gmail.com", "0894751377");
-                      }}>{"<== กดที่นี่"}
-                    </Checkbox>
-                  </Typography.Text>
-                </div>
 
                 {/* alert */}
                 {msg === "" ? null :

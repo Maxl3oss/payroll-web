@@ -110,7 +110,7 @@ function MainSalary() {
       },
     },
     {
-      title: "รวมรับจริง", dataIndex: "total_income", key: "total_income", render(value) {
+      title: "รับจริง", dataIndex: "received", key: "received", render(value) {
         return <Fragment>{CommaNumber(value, 2)}</Fragment>
       },
     },
@@ -154,7 +154,7 @@ function MainSalary() {
         </div>
         <div className="layout-filter">
           <div className="w-full lg:w-1/2 xl:w-1/3 pad-main">
-            <div>ค้นหา</div>
+            <div className="text-">ค้นหา</div>
             <Input
               name="search"
               onChange={handleChange}

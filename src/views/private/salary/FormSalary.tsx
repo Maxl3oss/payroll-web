@@ -77,7 +77,7 @@ function FormSalary() {
             <DatePickerTH
               picker="month"
               onChange={onChangeDate}
-
+              disabledDate={(d) => dateNow != null && d.isAfter(dateNow) && !d.isSame(dateNow, 'month')}
             />
           </Form.Item>
           <Form.Item

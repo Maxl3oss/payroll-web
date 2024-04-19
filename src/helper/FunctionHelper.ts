@@ -50,7 +50,7 @@ export const ValidateFileType = ({ type }: UploadFile, allowedTypes?: "xlsx" | "
 
 
 // iso to มีนาคม 2567
-export function ConvertToDateISOToThai(timestamp: string): string {
+export function ConvertToDateISOToThai(timestamp: string, format = "MMMM BBBB"): string {
   // Parse the timestamp
   const date = dayjs(timestamp);
 
@@ -58,7 +58,7 @@ export function ConvertToDateISOToThai(timestamp: string): string {
   dayjs.locale("th");
 
   // Format the date
-  const formattedDate: string = date.format("MMMM BBBB");
+  const formattedDate: string = date.format(format);
 
   return formattedDate;
 }
