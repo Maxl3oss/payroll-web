@@ -25,7 +25,7 @@ export type IUser = {
 	id: string;
 	created_at: string;
 	updated_at: string;
-	deleted_at?: string;
+	deleted_at?: string | null;
 	full_name: string;
 	email: string;
 	taxid: string;

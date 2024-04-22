@@ -1,5 +1,5 @@
 import { IPagin, IUser } from '@/types/global';
-import { App, Button, Input, Pagination, Popconfirm, Table } from 'antd';
+import { App, Badge, Button, Input, Pagination, Popconfirm, Table } from 'antd';
 import { Fragment, useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { SearchOutlined } from "@ant-design/icons";
@@ -42,10 +42,10 @@ function MainUser() {
     }
   }
 
-  const handleDelete = async (userId: string) => {
+  const handleDelete = async (userId: string, isOpen: boolean) => {
     const res = await DeleteUserByID(userId);
     if (res && (res.statusCode === 200 && res.taskStatus)) {
-      message.success("ลบสำเร็จ !");
+      message.success(`${isOpen ? "เปิด" : "ปิด"}ใช้งานสำเร็จ!`);
       fetchData(pagin.pageNumber, pagin.pageSize, formData.search);
     }
   }
@@ -88,7 +88,14 @@ function MainUser() {
       }
     },
     {
-      title: "จัดการ", align: "center", dataIndex: "manege", key: "manege", render(_, current) {
+      title: "สถานะ", dataIndex: "deleted_at", key: "deleted_at", align: "center", render(value) {
+        return (
+          <Badge text={(!value) ? "ใช้งาน" : "ปิดใช้งาน"} color={(!value ? "#22c55e" : "#ef4444")} />
+        )
+      }
+    },
+    {
+      title: "จัดการ", align: "center", dataIndex: "deleted_at", key: "deleted_at_last", render(value, current) {
         return (
           <>
             <Button
@@ -98,17 +105,33 @@ function MainUser() {
             >
               <i className="fa-solid fa-pen text-blue-main hover:text-blue-main/85"></i>
             </Button>
-            <Popconfirm
-              title="คุณแน่ใจ?"
-              description={`คุณต้องการลบ${current.full_name} ใช่หรือไม!`}
-              okText="ตกลง"
-              cancelText="ยกเลิก"
-              onConfirm={async () => handleDelete(current.id)}
-            >
-              <Button htmlType="button" type="text">
-                <i className="fa-solid fa-trash text-red-500 hover:text-red-500/85"></i>
-              </Button>
-            </Popconfirm>
+            {!value ? (
+              <Popconfirm
+                key={"ปิด"}
+                title="คุณแน่ใจ?"
+                description={`คุณต้องการ${current.deleted_at ? "เปิด" : "ปิด"}ใช้งาน ${current.full_name} ใช่หรือไม!`}
+                okText="ตกลง"
+                cancelText="ยกเลิก"
+                onConfirm={async () => handleDelete(current.id, value)}
+              >
+                <Button htmlType="button" type="text">
+                  <i className="fa-solid fa-user-xmark text-red-500 hover:text-red-500/85"></i>
+                </Button>
+              </Popconfirm>
+            ) : (
+              <Popconfirm
+                key={"เปิด"}
+                title="คุณแน่ใจ?"
+                description={`คุณต้องการเปิดใช้งาน ${current.full_name} ใช่หรือไม!`}
+                okText="ตกลง"
+                cancelText="ยกเลิก"
+                onConfirm={async () => handleDelete(current.id, value)}
+              >
+                <Button htmlType="button" type="text">
+                  <i className="fa-solid fa-user-check text-green-500 hover:text-green-500/85"></i>
+                </Button>
+              </Popconfirm>
+            )}
           </>
         );
       }
