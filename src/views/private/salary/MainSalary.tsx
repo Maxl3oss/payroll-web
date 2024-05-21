@@ -1,14 +1,14 @@
 import { Fragment, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Button, Input, Pagination, Table, TableProps } from "antd";
+import { Button, Input, Pagination, Select, Table, TableProps } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { IPagin } from "@/types/global";
+import { IDropdown, IPagin } from "@/types/global";
 import { nanoid } from "nanoid";
 import { DatePickerProps } from "antd/es/date-picker";
 import DatePickerTH from "@/components/DatePickerTH";
 import dayjs from "dayjs";
 import { CommaNumber, IndexTable } from "@/helper/FunctionHelper";
-import { GetSalary } from "@/services/Salary.Serivces";
+import { GetDDLSalaryType, GetSalary } from "@/services/Salary.Serivces";
 import ModalSalary from "./ModalSalary";
 
 export type ISalary = {
@@ -38,6 +38,7 @@ export type ISalary = {
 type IFormData = {
   search: string;
   month: string;
+  type: number;
 }
 
 type IDataModal = {
@@ -45,13 +46,20 @@ type IDataModal = {
   data: ISalary | null;
 }
 
+type IDataType = {
+  id: number;
+  name: string;
+}
+
 function MainSalary() {
   const dateNow = dayjs(new Date()?.toISOString());
   const [data, setData] = useState<ISalary[]>([]);
+  const [dataType, setDataType] = useState<IDropdown<number>[]>([]);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<IFormData>({
     search: "",
     month: "",
+    type: 0,
   })
   const [pagin, setPagin] = useState<IPagin>({
     pageNumber: 1,
@@ -66,17 +74,26 @@ function MainSalary() {
   const [openDelete, setOpenDelete] = useState(false);
 
   useEffect(() => {
-    Promise.all([fetchData()]);
+    Promise.all([fetchData(), fetchDataType()]);
   }, []);
 
-  const fetchData = async (pageNumber = 1, pageSize = 10, search = "", month = "") => {
+  const fetchData = async (pageNumber = 1, pageSize = 10, dataForm: IFormData = { search: "", month: "", type: 0 }) => {
     setLoading(true);
-    month = month === "" ? new Date()?.toISOString() : month;
-    const res = await GetSalary(pageNumber, pageSize, search, month);
+    dataForm.month = dataForm.month === "" ? new Date()?.toISOString() : dataForm.month;
+    const res = await GetSalary(pageNumber, pageSize, dataForm.search, dataForm.month, dataForm.type);
     setLoading(false);
     if (res && res.statusCode === 200 && res.taskStatus) {
       setData(res.data);
       setPagin(res.pagin);
+    }
+  }
+
+  const fetchDataType = async () => {
+    const res = await GetDDLSalaryType();
+    if (res && res.statusCode === 200 && res.taskStatus) {
+      const dataRes: IDataType[] = res?.data;
+      const format: IDropdown<number>[] = dataRes.map(curr => ({ value: curr?.id, label: curr?.name }));
+      setDataType([{ value: 0, label: "ทั้งหมด" }, ...format]);
     }
   }
 
@@ -172,9 +189,19 @@ function MainSalary() {
               value={formData.month !== "" ? dayjs(formData.month) : dateNow}
             />
           </div>
+          <div className="w-full lg:w-1/2 xl:w-1/6 pad-main">
+            <div>รูปแบบ</div>
+            <Select
+              defaultValue={0}
+              style={{ width: "100%" }}
+              value={formData.type}
+              onChange={(value) => setFormData(prev => ({ ...prev, type: value }))}
+              options={dataType}
+            />
+          </div>
           <div className="layout-filter-btn">
             <Button
-              onClick={() => fetchData(1, pagin.pageSize, formData.search, formData.month)}
+              onClick={() => fetchData(1, pagin.pageSize, formData)}
               type="primary"
             >
               <i className="fa-solid fa-magnifying-glass icon-btn"></i>
@@ -184,7 +211,7 @@ function MainSalary() {
               htmlType="reset"
               onClick={() => {
                 fetchData();
-                setFormData({ search: "", month: "" });
+                setFormData({ search: "", month: "", type: 0 });
               }}
             >
               <i className="fa-solid fa-arrow-rotate-right icon-btn"></i>
@@ -225,7 +252,7 @@ function MainSalary() {
         <div className="layout-pagin">
           <Pagination
             onChange={(pageNumber, pageSize) => {
-              fetchData(pageNumber, pageSize, formData.search, formData.month);
+              fetchData(pageNumber, pageSize, formData);
             }}
             total={pagin.totalRecord}
             current={pagin.pageNumber}

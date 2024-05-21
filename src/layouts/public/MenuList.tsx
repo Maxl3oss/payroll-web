@@ -30,7 +30,7 @@ const MenuList = [
     "role": ["user"],
     "icon": <i className="fa-solid fa-file-invoice" />,
     "path": "/slip",
-    "label": "ออกใบเสร็จ"
+    "label": "ออกสลิปเงินเดือน"
   },
   {
     "key": "5",

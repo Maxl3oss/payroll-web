@@ -1,17 +1,24 @@
 import DatePickerTH from "@/components/DatePickerTH";
 import UploadDragger from "@/components/UploadDragger";
 import { ValidateFileType } from "@/helper/FunctionHelper";
-import { UploadSalary } from "@/services/Salary.Serivces";
-import { App, Button, Form, GetProp, UploadProps } from "antd";
+import { GetDDLSalaryType, UploadSalary } from "@/services/Salary.Serivces";
+import { IDropdown } from "@/types/global";
+import { App, Button, Form, GetProp, Select, UploadProps } from "antd";
 import { DatePickerProps, UploadFile } from "antd/lib";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
 
 type IFormData = {
   month: string;
   fileList: UploadFile[];
+  type: number;
+}
+
+type IDataType = {
+  id: number;
+  name: string;
 }
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
@@ -21,10 +28,16 @@ function FormSalary() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const dateNow = dayjs();
+  const [dataType, setDataType] = useState<IDropdown<number>[]>([]);
   const [formData, setFormData] = useState<IFormData>({
     month: dateNow.toISOString(),
     fileList: [],
+    type: 0,
   });
+
+  useEffect(() => {
+    Promise.all([fetchDataType()]);
+  }, []);
 
   const onChangeDate: DatePickerProps["onChange"] = (date) => {
     setFormData({
@@ -33,10 +46,20 @@ function FormSalary() {
     });
   };
 
+  const fetchDataType = async () => {
+    const res = await GetDDLSalaryType();
+    if (res && res.statusCode === 200 && res.taskStatus) {
+      const dataRes: IDataType[] = res?.data;
+      const format: IDropdown<number>[] = dataRes.map(curr => ({ value: curr?.id, label: curr?.name }));
+      setDataType(format);
+    }
+  }
+
   const handleSubmit = async () => {
     // set data
     const dataSend = new FormData();
-    dataSend.append("month", formData.month)
+    dataSend.append("month", formData.month);
+    dataSend.append("type", formData?.type?.toString());
     formData.fileList.map((file) => {
       dataSend.append("files[]", file as FileType);
     });
@@ -50,6 +73,7 @@ function FormSalary() {
       setFormData({
         month: "",
         fileList: [],
+        type: 0,
       })
 
       // move
@@ -68,18 +92,32 @@ function FormSalary() {
           <h1>เพิ่มข้อมูลเงินเดือน</h1>
         </div>
         <Form initialValues={{ "month": dateNow }} layout="vertical" onFinish={handleSubmit}>
-          <Form.Item
-            label="ช่วงเวลา"
-            name="month"
-            rules={[{ required: true, message: "กรุณาเลือกช่วงเวลา" }]}
-            className="w-full lg:w-1/2 xl:w-1/3 pad-main"
-          >
-            <DatePickerTH
-              picker="month"
-              onChange={onChangeDate}
-              disabledDate={(d) => dateNow != null && d.isAfter(dateNow) && !d.isSame(dateNow, 'month')}
-            />
-          </Form.Item>
+          <div className="flex flex-wrap">
+            <Form.Item
+              label="ช่วงเวลา"
+              name="month"
+              rules={[{ required: true, message: "กรุณาเลือกช่วงเวลา" }]}
+              className="w-full lg:w-1/2 xl:w-1/3 pad-main"
+            >
+              <DatePickerTH
+                picker="month"
+                onChange={onChangeDate}
+                disabledDate={(d) => dateNow != null && d.isAfter(dateNow) && !d.isSame(dateNow, 'month')}
+              />
+            </Form.Item>
+            <Form.Item
+              label="รูปแบบ"
+              name="type"
+              rules={[{ required: true, message: "กรุณาเลือกรูปแบบ" }]}
+              className="w-full lg:w-1/2 xl:w-1/3 pad-main"
+            >
+              <Select
+                style={{ width: "100%" }}
+                onChange={(value) => setFormData(prev => ({ ...prev, type: Number(value || 0) }))}
+                options={dataType}
+              />
+            </Form.Item>
+          </div>
           <Form.Item
             label="อัปโหลดไฟล์"
             name="fileList"
@@ -99,7 +137,7 @@ function FormSalary() {
             extra="รองรับเฉพาะไฟล์ (excel)"
           >
             <UploadDragger
-              accept={".xlsx"}
+              accept={".xlsx, .xls"}
               fileList={formData.fileList}
               beforeUpload={(file: UploadFile) => {
                 const isAllowedType = ValidateFileType(file, "xlsx");
@@ -134,6 +172,7 @@ function FormSalary() {
                 setFormData({
                   month: dateNow.toISOString(),
                   fileList: [],
+                  type: 0
                 })
               }}>
               ล้างค่า

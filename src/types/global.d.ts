@@ -16,11 +16,6 @@ export type IRole = {
   name: string;
 }
 
-export type Role = {
-	id: number;
-	name: string;
-}
-
 export type IUser = {
 	id: string;
 	created_at: string;
@@ -34,9 +29,6 @@ export type IUser = {
 	role: Role;
 }
 
-export interface RootObject {
-	0: 0;
-}
 export type IToken = {
   access: string;
   refresh: string;
@@ -64,4 +56,9 @@ export type IErrorAxios = {
       message: string;
     }
   }
+}
+
+export type IDropdown<T = string> = {
+  value: T;
+  label: string;
 }

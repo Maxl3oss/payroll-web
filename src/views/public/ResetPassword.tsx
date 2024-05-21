@@ -35,10 +35,10 @@ function ResetPassword() {
   const next = () => {
     setCurrent(current + 1);
   };
-
   const [form] = Form.useForm<Data>();
 
   const handleSubmit = async (value: Data) => {
+    console.log(form.validateFields())
     setLoading(true);
     const res = await ChooseCall(current, value);
     setLoading(false);
@@ -65,7 +65,6 @@ function ResetPassword() {
     const { name, value } = e.target;
     form.setFieldValue(name, value);
   };
-
 
   return (
     <Fragment>
@@ -144,7 +143,7 @@ function ResetPassword() {
                       validator(_, value) {
                         if (value === "" && current === 2) {
                           return Promise.reject(new Error("กรุณากรอกยืนยันรหัสผ่าน!"));
-                        } else if ((getFieldValue("new_password")) !== value) {
+                        } else if ((getFieldValue("new_password")) !== value && current === 2) {
                           return Promise.reject(new Error("รหัสผ่านไม่ตรงกัน!"));
                         }
                         return Promise.resolve();
