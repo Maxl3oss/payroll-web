@@ -1,11 +1,11 @@
-import { Card, Row, Statistic, Table } from "antd"
+import { Card, Row, Select, Statistic, Table } from "antd"
 import { Fragment } from "react/jsx-runtime"
-import { UpCircleOutlined, DollarOutlined, UserOutlined } from "@ant-design/icons";
+import { DollarOutlined, UserOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { GetDashboard } from "@/services/Dashboard.Services";
 import { TableProps } from "antd/lib";
 import { nanoid } from "nanoid";
-import { CommaNumber, ConvertToDateISOToThai } from "@/helper/FunctionHelper";
+import { CommaNumber, ConvertToDateISOToThai, GetYearDropdown } from "@/helper/FunctionHelper";
 import { Column } from '@ant-design/charts';
 
 type Received = {
@@ -21,18 +21,21 @@ type Data = {
   received_by_month: Received[]
 }
 
+const currentYear = new Date().getFullYear() + 543;
 
 function Dashboard() {
   const [data, setData] = useState<Data>({ received: 0, user: 0, received_by_month: [] });
   const [loading, setLoading] = useState(false);
+  const dataYears = GetYearDropdown(2567);
+  const [years, setYears] = useState(currentYear);
 
   useEffect(() => {
     Promise.all([fetchData()]);
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async (year = 2024) => {
     setLoading(true);
-    const res = await GetDashboard(2024);
+    const res = await GetDashboard(year);
     setLoading(false);
     if (res && res.statusCode === 200 && res.taskStatus) {
       setData(res.data);
@@ -90,10 +93,22 @@ function Dashboard() {
           <h1>แดชบอร์ด</h1>
         </div>
         <div className="layout-contents">
-
+          <div className="w-full mb-5 lg:w-1/2 xl:w-1/6 pad-main">
+            <div>ข้อมูลปี</div>
+            <Select
+              defaultValue={currentYear}
+              value={years}
+              style={{ width: "100%" }}
+              onChange={(value) => {
+                setYears(value);
+                fetchData(value - 543);
+              }}
+              options={dataYears}
+            />
+          </div>
           <div className="bg-gray-100 rounded-xl p-5">
             <Row>
-              <div className="w-full grid gap-5 grid-cols-subgrid lg:grid-cols-3">
+              <div className="w-full grid gap-5 grid-cols-subgrid lg:grid-cols-2">
                 <Card bordered={false}>
                   <Statistic
                     title="รายรับรวมทั้งหมด"
@@ -104,7 +119,7 @@ function Dashboard() {
                     suffix="฿"
                   />
                 </Card>
-                <Card bordered={false}>
+                {/* <Card bordered={false}>
                   <Statistic
                     title="ตบเบิกรวมทั้งหมด"
                     value={0}
@@ -112,7 +127,7 @@ function Dashboard() {
                     prefix={<UpCircleOutlined />}
                     suffix="฿"
                   />
-                </Card>
+                </Card> */}
                 <Card bordered={false}>
                   <Statistic
                     title="ผู้ใช้งานรวม"

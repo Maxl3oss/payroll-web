@@ -4,8 +4,7 @@ import useAuthStore from "@/store/authStore";
 import { Button, DatePickerProps, Table } from "antd";
 import dayjs from "dayjs";
 import { Fragment, useEffect, useState } from "react"
-import { ISalary } from "../salary/MainSalary";
-import { IPagin } from "@/types/global";
+import { IPagin, ISalary } from "@/types/global";
 import { TableProps } from "antd/lib";
 import { CommaNumber, ConvertToDateISOToThai, IndexTable } from "@/helper/FunctionHelper";
 import ModalSalary from "../salary/ModalSalary";

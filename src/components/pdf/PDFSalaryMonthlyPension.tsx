@@ -8,8 +8,7 @@ import PhuketLogo from "@/assets/images/logo-phuket.jpg";
 import { CommaNumber, ConvertToDateISOToThai } from '@/helper/FunctionHelper';
 
 // Create styles
-const styles = await MakeStyles();
-
+const styles =  MakeStyles();
 function PDFSalaryMonthlyPension({ data }: PDFProps) {
   const [isLoading, setIsLoading] = useState(true);
 

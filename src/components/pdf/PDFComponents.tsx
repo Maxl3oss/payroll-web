@@ -23,11 +23,11 @@ function PDFComponents({ data }: Props) {
         return <PDFDepartment data={data} />;
       case "เงินเดือนครู":
         return <PDFTeacherSalary data={data} />;
-      case "บำนาญครู": 
+      case "บำนาญครู":
         return <PDFTeacherPension data={data} />;
-      case "บำเหน็จรายเดือน": 
+      case "บำเหน็จรายเดือน":
         return <PDFSalaryMonthlyPension data={data} />;
-      case "บำนาญข้าราชการ": 
+      case "บำนาญข้าราชการ":
         return <PDFCivilServantPension data={data} />;
       default:
         return (
@@ -40,7 +40,7 @@ function PDFComponents({ data }: Props) {
 
   return (
     <Fragment>
-      {ChooseShow(data.salary_type.name)}
+        {ChooseShow(data.salary_type.name)}
     </Fragment>
   )
 }

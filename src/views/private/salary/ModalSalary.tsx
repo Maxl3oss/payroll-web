@@ -44,7 +44,14 @@ function ModalSalary({ dataModal, setDataModal, openDelete, closeDelete, onFetch
   return (
     <Fragment>
       {dataModal.isOpen && dataModal.data ?
-        <Modal width={700} title={`สลิป${dataModal.data.salary_type.name}`} open={dataModal.isOpen} onCancel={() => setDataModal({ isOpen: false, data: null })} onOk={() => setDataModal({ isOpen: false, data: null })}>
+        <Modal
+          style={{ top: 5 }}
+          width={1000}
+          title={`สลิป${dataModal.data.salary_type.name}`}
+          open={dataModal.isOpen}
+          onCancel={() => setDataModal({ isOpen: false, data: null })}
+          onOk={() => setDataModal({ isOpen: false, data: null })
+          }>
           <PDFComponents data={dataModal.data} />
         </Modal>
         : null}

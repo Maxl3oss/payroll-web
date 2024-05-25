@@ -1,4 +1,4 @@
-import { IPagin } from "@/types/global";
+import { IDropdown, IPagin } from "@/types/global";
 import { UploadFile } from "antd/lib";
 import dayjs from "dayjs";
 
@@ -75,4 +75,16 @@ export function FormatPhoneNumber(phoneNumber: string) {
     // If the phone number doesn't have 10 digits, return it as is
     return phoneNumber;
   }
+}
+
+export function GetYearDropdown(startYear: number, endYear?: number): IDropdown<number>[] {
+  const currentYear = new Date().getFullYear();
+  const finalYear = (endYear || currentYear) + 543;
+  const years: IDropdown<number>[] = [];
+
+  for (let year = startYear; year <= finalYear + 1; year++) {
+    years.push({ value: year, label: year.toString() });
+  }
+
+  return years;
 }

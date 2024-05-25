@@ -71,7 +71,7 @@ export function PDFShowOnDevice(props: Props) {
               );
             } else {
               return (
-                <PDFViewer style={{ width: "100%", height: "calc(100vh - 300px)" }}>
+                <PDFViewer style={{ width: "100%", height: "calc(100vh - 140px)" }}>
                   {children}
                 </PDFViewer>
               );
