@@ -1,10 +1,10 @@
-import PDFSalary from '@/components/pdf/PDFSalary'
 import { App, Button, Form, Modal, Popconfirm } from 'antd'
 import { Fragment, useState } from 'react'
-import { ISalary } from './MainSalary';
 import DatePickerTH from '@/components/DatePickerTH';
 import dayjs from 'dayjs';
 import { DeleteMany } from '@/services/Salary.Serivces';
+import { ISalary } from '@/types/global';
+import PDFComponents from '@/components/pdf/PDFComponents';
 
 type IDataModal = {
   isOpen: boolean;
@@ -44,8 +44,8 @@ function ModalSalary({ dataModal, setDataModal, openDelete, closeDelete, onFetch
   return (
     <Fragment>
       {dataModal.isOpen && dataModal.data ?
-        <Modal width={700} title="สลิป รพ.สต." open={dataModal.isOpen} onCancel={() => setDataModal({ isOpen: false, data: null })} onOk={() => setDataModal({ isOpen: false, data: null })}>
-          <PDFSalary data={dataModal.data} />
+        <Modal width={700} title={`สลิป${dataModal.data.salary_type.name}`} open={dataModal.isOpen} onCancel={() => setDataModal({ isOpen: false, data: null })} onOk={() => setDataModal({ isOpen: false, data: null })}>
+          <PDFComponents data={dataModal.data} />
         </Modal>
         : null}
 

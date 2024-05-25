@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Button, Input, Pagination, Select, Table, TableProps } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { IDropdown, IPagin } from "@/types/global";
+import { IDropdown, IPagin, ISalary } from "@/types/global";
 import { nanoid } from "nanoid";
 import { DatePickerProps } from "antd/es/date-picker";
 import DatePickerTH from "@/components/DatePickerTH";
@@ -10,30 +10,6 @@ import dayjs from "dayjs";
 import { CommaNumber, IndexTable } from "@/helper/FunctionHelper";
 import { GetDDLSalaryType, GetSalary } from "@/services/Salary.Serivces";
 import ModalSalary from "./ModalSalary";
-
-export type ISalary = {
-  id: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at?: string;
-  full_name: string;
-  bank_account_number: string;
-  salary: string;
-  additional_benefits: string;
-  fixed_income: string;
-  monthly_compensation: string;
-  actual_pay: string;
-  tax: string;
-  coop: string;
-  public_health_cooperative: string;
-  revenue_department: string;
-  dgs: string;
-  bangkok_bank: string;
-  total_income: string;
-  received: string;
-  social_security: string;
-  bank_transfer: string;
-}
 
 type IFormData = {
   search: string;
@@ -167,7 +143,7 @@ function MainSalary() {
     <Fragment>
       <div className="layout-main">
         <div className="layout-head">
-          <h1>แสดงเงินเดือน</h1>
+          <h1>รายการสลิปเงินเดือน</h1>
         </div>
         <div className="layout-filter">
           <div className="w-full lg:w-1/2 xl:w-1/3 pad-main">

@@ -8,9 +8,9 @@ import Login from "@/views/public/Login";
 import NoPage from "@/views/public/NoPage";
 import MainSalary from "@/views/private/salary/MainSalary";
 import FormSalary from "@/views/private/salary/FormSalary";
-import MainUser from "@/views/private/ีuser/MainUser";
+import MainUser from "@/views/private/user/MainUser";
 import MainSlip from "@/views/private/slip/MainSlip";
-import FormUser from "@/views/private/ีuser/FormUser";
+import FormUser from "@/views/private/user/FormUser";
 import ResetPassword from "@/views/public/ResetPassword";
 
 const Routes = [

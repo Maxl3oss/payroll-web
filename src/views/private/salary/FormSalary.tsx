@@ -74,7 +74,7 @@ function FormSalary() {
         month: "",
         fileList: [],
         type: 0,
-      })
+      });
 
       // move
       message.success("บันทึกข้อมูลสำเร็จ!");

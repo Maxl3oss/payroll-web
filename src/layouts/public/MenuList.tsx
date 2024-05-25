@@ -16,7 +16,7 @@ const MenuList = [
     "role": ["admin"],
     "icon": <FileTextFilled />,
     "path": "/salary",
-    "label": "เงินเดือน"
+    "label": "สลิปเงินเดือน"
   },
   {
     "key": "3",
