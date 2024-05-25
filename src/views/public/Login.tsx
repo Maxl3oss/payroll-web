@@ -1,18 +1,33 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate, } from "react-router-dom";
-import { Form, Input, Button, Image, Alert, App } from "antd";
+import { Form, Input, Button, Image, Alert, App, Checkbox } from "antd";
 import Banner from "@/assets/images/banners/banner.jpg"
 import { AuthLogin } from "@/services/Auth.Services";
 import useAuthStore from "@/store/authStore";
 import { IToken } from "@/types/global";
+import CryptoJS from "crypto-js";
+
+const secretKey = process.env.SECRETKEY as string;
+
+type TypeRemember = {
+  email: string;
+  password: string;
+  isCheck: boolean;
+}
 
 export const Login = () => {
   const navigate = useNavigate();
+  const [form] = Form.useForm();
   const { message } = App.useApp();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isCheck, setIsCheck] = useState(false);
   const [msg, setMsg] = useState("");
   const { setUser, setTokens } = useAuthStore();
+
+  useEffect(() => {
+    handleRemember();
+  }, []);
 
   const handleSubmit = async () => {
     setMsg("");
@@ -23,11 +38,55 @@ export const Login = () => {
       const token: IToken = res.data.token;
       setUser(res.data.user);
       setTokens(token.access, token.refresh);
+
+      if (isCheck) {
+        handleSave(dataSend.email, dataSend.password);
+      } else {
+        handleNoSave();
+      }
+
       navigate("/");
       return;
     }
     setMsg(res?.message ?? "");
   }
+
+  const handleNoSave = () => {
+    const dataRemember: TypeRemember = {
+      email: "",
+      password: "",
+      isCheck: false,
+    }
+    localStorage.setItem("remember", JSON.stringify(dataRemember));
+  }
+
+  const handleSave = (email: string, pass: string) => {
+    const encryptedEmail = CryptoJS.AES.encrypt(email, secretKey).toString();
+    const encryptedPassword = CryptoJS.AES.encrypt(pass, secretKey).toString();
+    const dataRemember: TypeRemember = {
+      email: encryptedEmail,
+      password: encryptedPassword,
+      isCheck: true,
+    }
+    localStorage.setItem("remember", JSON.stringify(dataRemember));
+  };
+
+  const handleRemember = () => {
+    try {
+      const getData = localStorage.getItem("remember");
+      if (getData) {
+        const jsonData = JSON.parse(getData);
+        const deEmail = CryptoJS.AES.decrypt(jsonData.email, secretKey).toString(CryptoJS.enc.Utf8);
+        const dePassword = CryptoJS.AES.decrypt(jsonData.password, secretKey).toString(CryptoJS.enc.Utf8);
+        const deIsCheck = Boolean(jsonData.isCheck);
+        setUsername(deEmail); setPassword(dePassword); setIsCheck(deIsCheck);
+        form.setFieldsValue({ "email": deEmail, "password": dePassword, "isCheck": deIsCheck });
+        console.log(deIsCheck);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <Fragment>
@@ -39,6 +98,7 @@ export const Login = () => {
                 <Image preview={false} className="banner-image" src={Banner} />
               </div>
               <Form
+                form={form}
                 layout="vertical"
                 className="min-h-96 form relative"
                 onFinish={handleSubmit}
@@ -56,7 +116,7 @@ export const Login = () => {
                 >
                   <Input
                     className="border rounded p-2"
-                    value={username}
+                    // value={username}
                     onChange={(e) => setUsername(e.target.value)}
                   />
                 </Form.Item>
@@ -71,11 +131,9 @@ export const Login = () => {
                 >
                   <Input.Password
                     className="border rounded p-2"
-                    value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </Form.Item>
-
 
                 <Form.Item>
                   <div className="flex justify-center">
@@ -88,6 +146,15 @@ export const Login = () => {
                     </Button>
                   </div>
                 </Form.Item>
+
+                <Checkbox
+                  name="isCheck"
+                  checked={isCheck}
+                  onChange={(e) => {
+                    setIsCheck(e.target.checked as boolean);
+                  }}>
+                  จดจำรหัสผ่าน
+                </Checkbox>
 
                 <Form.Item>
                   <p className="text-end text-gray-600">
@@ -112,7 +179,7 @@ export const Login = () => {
           </div>
         </div>
       </main>
-    </Fragment>
+    </Fragment >
   );
 };
 
