@@ -10,6 +10,15 @@ export type PDFProps = {
   data: ISalary;
 }
 
+export type PDFOtherProps = PDFProps & {
+  length: number;
+}
+
+export type PDFOther = {
+  OtherId: number;
+  OtherName: string;
+  OtherValue: number;
+}
 
 export function MakeStyles() {
   // Create font
@@ -82,4 +91,32 @@ export function MakeStyles() {
       textAlign: "right",
     }
   });
+}
+
+export function ArrayOtherName({ data, length }: PDFOtherProps): PDFOther[] {
+  const arr: PDFOther[] = [];
+  const otherValue = [
+    { value: data.other1, name: data.salary_other.other1_name },
+    { value: data.other2, name: data.salary_other.other2_name },
+    { value: data.other3, name: data.salary_other.other3_name },
+    { value: data.other4, name: data.salary_other.other4_name },
+    { value: data.other5, name: data.salary_other.other5_name },
+    { value: data.other6, name: data.salary_other.other6_name },
+    { value: data.other7, name: data.salary_other.other7_name },
+    { value: data.other8, name: data.salary_other.other8_name },
+  ]
+  
+  const sliceArr = otherValue.slice(0, length);
+
+  sliceArr.forEach((curr, idx) => {
+    if (curr.name !== "") {
+      arr.push({
+        OtherId: idx + 1,
+        OtherName: curr.name,
+        OtherValue: curr.value,
+      });
+    }
+  })
+
+  return arr;
 }

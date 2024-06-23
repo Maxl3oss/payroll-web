@@ -73,7 +73,7 @@ function MainUser() {
       title: "ชื่อ", dataIndex: "full_name", key: "full_name",
     },
     {
-      title: "อีเมล", dataIndex: "email", key: "email", render(value) {
+      title: "อีเมล/เลขบัตรประชาชน", dataIndex: "email", key: "email", render(value) {
         return <>{value || "-"}</>
       }
     },

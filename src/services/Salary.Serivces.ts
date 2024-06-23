@@ -7,6 +7,7 @@ export async function GetSalary(pageNumber: number, pageSize: number, search: st
     const res = await useAxios.get(`/salary/get-all?search=${search}&pageNumber=${pageNumber}&pageSize=${pageSize}&month=${month}&type=${type}`);
     return res.data;
   } catch (error) {
+    console.log(error)
     return (error as IErrorAxios)?.response?.data
   }
 }
@@ -20,9 +21,9 @@ export async function UploadSalary(data: unknown) {
   }
 }
 
-export async function DeleteMany(month: string) {
+export async function DeleteMany(month: string, typeId: string) {
   try {
-    const res = await useAxios.delete(`/salary/delete-by-month?month=${month}`);
+    const res = await useAxios.delete(`/salary/delete-by-month?month=${month}&type=${typeId}`);
     return res.data;
   } catch (error) {
     return (error as IErrorAxios)?.response?.data
@@ -42,6 +43,15 @@ export async function GetSalaryByUser(userId: string, pageNumber: number, pageSi
 export async function GetDDLSalaryType() {
   try {
     const res = await useAxios.get(`/salary/get-type`);
+    return res.data;
+  } catch (error) {
+    return (error as IErrorAxios)?.response?.data
+  }
+}
+
+export async function GetSalaryOther(type: number) {
+  try {
+    const res = await useAxios.get(`/salary/get-salary-other?type=${type}`);
     return res.data;
   } catch (error) {
     return (error as IErrorAxios)?.response?.data

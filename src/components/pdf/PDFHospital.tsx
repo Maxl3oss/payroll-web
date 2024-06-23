@@ -2,7 +2,7 @@ import { Spin } from 'antd';
 import { Fragment, useEffect, useState } from 'react'
 import { PDFShowOnDevice } from '../PdfShowOnDevice';
 import { Page, Document, View, Text, Image } from '@react-pdf/renderer';
-import { MakeStyles, FormatName, PDFProps } from "./Helper"
+import { MakeStyles, FormatName, PDFProps, ArrayOtherName } from "./Helper"
 // Image
 import PhuketLogo from "@/assets/images/logo-phuket.jpg";
 import { CommaNumber, ConvertToDateISOToThai } from '@/helper/FunctionHelper';
@@ -54,7 +54,7 @@ function PDFHospital({ data }: PDFProps) {
 
               <View style={styles.col}>
                 <Text style={styles.w15}></Text>
-                <Text style={[styles.colItem, styles.w75]}>เงินประจำตำแหน่ง</Text>
+                <Text style={[styles.colItem, styles.w75]}>เงินประจำตำแหน่ง  </Text>
                 <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.fixed_income, 2)}</Text>
               </View>
 
@@ -108,15 +108,17 @@ function PDFHospital({ data }: PDFProps) {
 
               <View style={styles.col}>
                 <Text style={styles.w15}></Text>
-                <Text style={[styles.colItem, styles.w75]}>ธนาคารกรุงเทพ</Text>
-                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.bangkok_bank, 2)}</Text>
+                <Text style={[styles.colItem, styles.w75]}>ธนาคารกรุงไทย</Text>
+                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.krung_thai_bank, 2)}</Text>
               </View>
 
-              <View style={styles.col}>
-                <Text style={styles.w15}></Text>
-                <Text style={[styles.colItem, styles.w75]}>อื่น ๆ</Text>
-                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.other, 2)}</Text>
-              </View>
+              {ArrayOtherName({ data, length: 5 }).map((other, idx) => (
+                <View key={idx + other.OtherName} style={styles.col}>
+                  <Text style={styles.w15}></Text>
+                  <Text style={[styles.colItem, styles.w75]}>{other.OtherName + "   "}</Text>
+                  <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(other.OtherValue, 2)}</Text>
+                </View>
+              ))}
 
               <View style={[styles.col, { marginTop: "2mm" }]}>
                 <Text style={[styles.colItem, styles.textBold, { width: "20%" }]}>รวมรายจ่าย</Text>
@@ -137,7 +139,7 @@ function PDFHospital({ data }: PDFProps) {
           </Page>
         </Document>
       </PDFShowOnDevice>
-    </Fragment>
+    </Fragment >
   )
 }
 

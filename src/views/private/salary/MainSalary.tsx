@@ -58,7 +58,7 @@ function MainSalary() {
     dataForm.month = dataForm.month === "" ? new Date()?.toISOString() : dataForm.month;
     const res = await GetSalary(pageNumber, pageSize, dataForm.search, dataForm.month, dataForm.type);
     setLoading(false);
-    if (res && res.statusCode === 200 && res.taskStatus) {
+    if (res && (res.statusCode === 200 && res.taskStatus)) {
       setData(res.data);
       setPagin(res.pagin);
     }
@@ -66,7 +66,7 @@ function MainSalary() {
 
   const fetchDataType = async () => {
     const res = await GetDDLSalaryType();
-    if (res && res.statusCode === 200 && res.taskStatus) {
+    if (res && (res.statusCode === 200 && res.taskStatus)) {
       const dataRes: IDataType[] = res?.data;
       const format: IDropdown<number>[] = dataRes.map(curr => ({ value: curr?.id, label: curr?.name }));
       setDataType([{ value: 0, label: "ทั้งหมด" }, ...format]);
@@ -238,7 +238,11 @@ function MainSalary() {
       </div>
       {/* modal */}
       <ModalSalary
-        onFetch={fetchData}
+        dataType={dataType}
+        onFetch={() => {
+          fetchData();
+          setFormData({ search: "", month: "", type: 0 });
+        }}
         openDelete={openDelete}
         closeDelete={setOpenDelete}
         dataModal={dataModal}

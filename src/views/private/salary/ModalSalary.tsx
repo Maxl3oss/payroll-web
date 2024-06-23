@@ -1,9 +1,9 @@
-import { App, Button, Form, Modal, Popconfirm } from 'antd'
+import { App, Button, Form, Modal, Popconfirm, Select } from 'antd'
 import { Fragment, useState } from 'react'
 import DatePickerTH from '@/components/DatePickerTH';
 import dayjs from 'dayjs';
 import { DeleteMany } from '@/services/Salary.Serivces';
-import { ISalary } from '@/types/global';
+import { IDropdown, ISalary } from '@/types/global';
 import PDFComponents from '@/components/pdf/PDFComponents';
 
 type IDataModal = {
@@ -13,19 +13,21 @@ type IDataModal = {
 
 type Props = {
   dataModal: IDataModal;
+  dataType: IDropdown<number>[];
   setDataModal: (val: IDataModal) => void;
   openDelete: boolean;
   closeDelete: (val: boolean) => void;
   onFetch: () => void;
 }
 
-function ModalSalary({ dataModal, setDataModal, openDelete, closeDelete, onFetch }: Props) {
+function ModalSalary({ dataModal, dataType, setDataModal, openDelete, closeDelete, onFetch }: Props) {
   const { message } = App.useApp();
   const [month, setMonth] = useState("");
+  const [type, setType] = useState(0);
   const [form] = Form.useForm();
 
   const handleDelete = async () => {
-    const res = await DeleteMany(month);
+    const res = await DeleteMany(month, type.toString());
     if (res && res.statusCode === 200 && res.taskStatus) {
       message.success("ลบข้อมูลเรียบร้อย");
       onFetch();
@@ -64,7 +66,7 @@ function ModalSalary({ dataModal, setDataModal, openDelete, closeDelete, onFetch
           onCancel={handleClose}
         >
           <div className="w-full my-5 pad-main">
-            <Form form={form} layout="vertical" onFinish={handleDelete}>
+            <Form form={form} initialValues={{ "type": "ทั้งหมด" }} layout="vertical" onFinish={handleDelete}>
               <Form.Item
                 label="ช่วงเวลาที่ต้องการลบ"
                 name="month"
@@ -75,6 +77,19 @@ function ModalSalary({ dataModal, setDataModal, openDelete, closeDelete, onFetch
                   picker="month"
                   onChange={(e) => setMonth(e.toISOString())}
                   value={month !== "" ? dayjs(month) : null}
+                />
+              </Form.Item>
+              <Form.Item
+                label="รูปแบบ"
+                name="type"
+                rules={[{ required: ![0, 1, 2, 3, 5, 6, 7].includes(type), message: "กรุณาเลือกรูปแบบ" }]}
+                className="w-full pad-main"
+              >
+                <Select
+                  style={{ width: "100%" }}
+                  value={type}
+                  onChange={(value) => setType(value)}
+                  options={dataType}
                 />
               </Form.Item>
 

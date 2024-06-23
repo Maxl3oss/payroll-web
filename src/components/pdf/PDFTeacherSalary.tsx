@@ -2,7 +2,7 @@ import { Spin } from 'antd';
 import { Fragment, useEffect, useState } from 'react'
 import { PDFShowOnDevice } from '../PdfShowOnDevice';
 import { Page, Document, View, Text, Image } from '@react-pdf/renderer';
-import { MakeStyles, FormatName, PDFProps } from "./Helper"
+import { MakeStyles, FormatName, PDFProps, ArrayOtherName } from "./Helper"
 // Image
 import PhuketLogo from "@/assets/images/logo-phuket.jpg";
 import { CommaNumber, ConvertToDateISOToThai } from '@/helper/FunctionHelper';
@@ -68,7 +68,13 @@ function PDFTeacherSalary({ data }: PDFProps) {
               <View style={styles.col}>
                 <Text style={styles.w15}></Text>
                 <Text style={[styles.colItem, styles.w75]}>เงินเพิ่มการครองชีพชั่วคราว</Text>
-                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.additional_benefits, 2)}</Text>
+                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.living_allowance, 2)}</Text>
+              </View>
+
+              <View style={styles.col}>
+                <Text style={styles.w15}></Text>
+                <Text style={[styles.colItem, styles.w75]}>ค่าตอบแทนพิเศษ</Text>
+                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.special_compensation, 2)}</Text>
               </View>
 
               <View style={[styles.col, { marginTop: "2mm" }]}>
@@ -109,6 +115,12 @@ function PDFTeacherSalary({ data }: PDFProps) {
 
               <View style={styles.col}>
                 <Text style={styles.w15}></Text>
+                <Text style={[styles.colItem, styles.w75]}>สหกรณ์ฯครู สุราษฎร์ธานี</Text>
+                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.teachers_savings_coop_surat, 2)}</Text>
+              </View>
+
+              <View style={styles.col}>
+                <Text style={styles.w15}></Text>
                 <Text style={[styles.colItem, styles.w75]}>เงินกู้ บมจ.กรุงไทย</Text>
                 <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.private_company, 2)}</Text>
               </View>
@@ -116,7 +128,7 @@ function PDFTeacherSalary({ data }: PDFProps) {
               <View style={styles.col}>
                 <Text style={styles.w15}></Text>
                 <Text style={[styles.colItem, styles.w75]}>เงินกู้ธ.ออมสิน สาขาภูเก็ต</Text>
-                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(0, 2)}</Text>
+                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.phuket_savings_branch, 2)}</Text>
               </View>
 
               <View style={styles.col}>
@@ -128,7 +140,7 @@ function PDFTeacherSalary({ data }: PDFProps) {
               <View style={styles.col}>
                 <Text style={styles.w15}></Text>
                 <Text style={[styles.colItem, styles.w75]}>เงินกู้ธ.ออมสิน สาขาพูนผล</Text>
-                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.patong_savings_branch, 2)}</Text>
+                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.poon_phol_savings_branch, 2)}</Text>
               </View>
 
               <View style={styles.col}>
@@ -141,6 +153,12 @@ function PDFTeacherSalary({ data }: PDFProps) {
                 <Text style={styles.w15}></Text>
                 <Text style={[styles.colItem, styles.w75]}>เงินกู้ธ.ออมสิน สาขาเชิงทะเล</Text>
                 <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.cherng_talay_savings_branch, 2)}</Text>
+              </View>
+
+              <View style={styles.col}>
+                <Text style={styles.w15}></Text>
+                <Text style={[styles.colItem, styles.w75]}>เงินกู้ธ.อิสลาม</Text>
+                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.islamic_bank_loan, 2)}</Text>
               </View>
 
               <View style={styles.col}>
@@ -163,9 +181,17 @@ function PDFTeacherSalary({ data }: PDFProps) {
 
               <View style={styles.col}>
                 <Text style={styles.w15}></Text>
-                <Text style={[styles.colItem, styles.w75]}>อื่น ๆ</Text>
-                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.other, 2)}</Text>
+                <Text style={[styles.colItem, styles.w75]}>กสจ.</Text>
+                <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(data.gsc, 2)}</Text>
               </View>
+
+              {ArrayOtherName({ data, length: 5 }).map((other, idx) => (
+                <View key={idx + other.OtherName} style={styles.col}>
+                  <Text style={styles.w15}></Text>
+                  <Text style={[styles.colItem, styles.w75]}>{other.OtherName + "   "}</Text>
+                  <Text style={[styles.colItem, styles.textEnd, styles.w15]}>{CommaNumber(other.OtherValue, 2)}</Text>
+                </View>
+              ))}
 
               <View style={[styles.col, { marginTop: "2mm" }]}>
                 <Text style={[styles.colItem, styles.textBold, { width: "20%" }]}>รวมรายจ่าย</Text>

@@ -1,6 +1,7 @@
 import { IDropdown, IPagin } from "@/types/global";
 import { UploadFile } from "antd/lib";
 import dayjs from "dayjs";
+import CryptoJS from "crypto-js";
 
 export function CommaNumber(num: number | string, units = 0): string {
   if (!num || num === undefined || num === "") num = 0;
@@ -48,7 +49,6 @@ export const ValidateFileType = ({ type }: UploadFile, allowedTypes?: "xlsx" | "
   return useType.includes(type);
 };
 
-
 // iso to มีนาคม 2567
 export function ConvertToDateISOToThai(timestamp: string, format = "MMMM BBBB"): string {
   // Parse the timestamp
@@ -87,4 +87,12 @@ export function GetYearDropdown(startYear: number, endYear?: number): IDropdown<
   }
 
   return years;
+}
+
+// export const DecryptedJSON = (encryptedData: string) => CryptoJS.AES.decrypt(encryptedData, "Zi4VwqYgHXNbBQRRETetjPZVRHKibAux").toString(CryptoJS.enc.Utf8);
+
+export function DecryptedJSON(encryptedData: string) {
+  const decData = CryptoJS.enc.Base64.parse(encryptedData).toString(CryptoJS.enc.Utf8)
+  const bytes = CryptoJS.AES.decrypt(decData, "Zi4VwqYgHXNbBQRRETetjPZVRHKibAux").toString(CryptoJS.enc.Utf8)
+  return JSON.parse(bytes)
 }
