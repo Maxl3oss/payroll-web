@@ -1,10 +1,10 @@
 import DatePickerTH from "@/components/DatePickerTH"
-import { GetSalaryByUser } from "@/services/Salary.Serivces";
+import { GetDDLSalaryType, GetSalaryByUser } from "@/services/Salary.Serivces";
 import useAuthStore from "@/store/authStore";
 import { Button, DatePickerProps, Table } from "antd";
 import dayjs from "dayjs";
 import { Fragment, useEffect, useState } from "react"
-import { IPagin, ISalary } from "@/types/global";
+import { IDropdown, IPagin, ISalary } from "@/types/global";
 import { TableProps } from "antd/lib";
 import { CommaNumber, ConvertToDateISOToThai, IndexTable } from "@/helper/FunctionHelper";
 import ModalSalary from "../salary/ModalSalary";
@@ -14,12 +14,18 @@ type IDataModal = {
   data: ISalary | null;
 }
 
+type IDataType = {
+  id: number;
+  name: string;
+}
+
 function MainSlip() {
   const { user } = useAuthStore();
   const dateNow = dayjs(new Date()?.toISOString());
   const [month, setMonth] = useState("");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<ISalary[]>([]);
+  const [dataType, setDataType] = useState<IDropdown<number>[]>([]);
   const [pagin, setPagin] = useState<IPagin>({
     pageNumber: 1,
     pageSize: 10,
@@ -31,9 +37,22 @@ function MainSlip() {
     data: null,
   });
 
+  useEffect(() => {
+    Promise.all([fetchData(user?.id ?? ""), fetchDataType()]);
+  }, [user]);
+
   const onChangeDate: DatePickerProps["onChange"] = (date) => {
     setMonth(date?.toISOString());
   };
+
+  const fetchDataType = async () => {
+    const res = await GetDDLSalaryType();
+    if (res && (res.statusCode === 200 && res.taskStatus)) {
+      const dataRes: IDataType[] = res?.data;
+      const format: IDropdown<number>[] = dataRes.map(curr => ({ value: curr?.id, label: curr?.name }));
+      setDataType([{ value: 0, label: "ทั้งหมด" }, ...format]);
+    }
+  }
 
   const fetchData = async (userId = "", pageNumber = 1, pageSize = 10, month = "") => {
     const res = await GetSalaryByUser(userId, pageNumber, pageSize, month);
@@ -43,7 +62,7 @@ function MainSlip() {
       setData(res.data);
       setPagin(res.pagin);
     }
-  }
+  };
 
   const columns: TableProps<ISalary>["columns"] = [
     {
@@ -99,10 +118,6 @@ function MainSlip() {
     }
   ];
 
-  useEffect(() => {
-    Promise.all([fetchData(user?.id ?? "")]);
-  }, [user]);
-
   return (
     <Fragment>
       <div className="layout-main">
@@ -154,6 +169,7 @@ function MainSlip() {
       </div>
       {/* modal */}
       <ModalSalary
+        dataType={dataType}
         onFetch={fetchData}
         openDelete={false}
         closeDelete={() => null}
