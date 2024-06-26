@@ -1,6 +1,7 @@
 import axios from "axios";
 
-export const BASE_URL = process.env.BASE_URL_API;
+export const BASE_URL = process.env.BASE_URL_API as string;
+export const SECRET_KEY = process.env.SECRET_KEY as string;
 
 export const useAxios = axios.create({
   baseURL: BASE_URL,
@@ -23,9 +24,7 @@ useAxios.interceptors.request.use(config => {
 });
 
 function getToken(): string {
-  // const { accessToken } = useAuthStore();
   const dataLocal = localStorage.getItem("auth-store") || null;
   const dataToken = dataLocal ? JSON.parse(dataLocal)?.state?.accessToken ?? "" : "";
-  // console.log(dataToken)
   return dataToken;
 }

@@ -6,8 +6,7 @@ import { AuthLogin } from "@/services/Auth.Services";
 import useAuthStore from "@/store/authStore";
 import { IToken } from "@/types/global";
 import CryptoJS from "crypto-js";
-
-const secretKey = process.env.SECRETKEY as string;
+import { SECRET_KEY } from "@/helper/Axios";
 
 type TypeRemember = {
   email: string;
@@ -61,8 +60,8 @@ export const Login = () => {
   }
 
   const handleSave = (email: string, pass: string) => {
-    const encryptedEmail = CryptoJS.AES.encrypt(email, secretKey).toString();
-    const encryptedPassword = CryptoJS.AES.encrypt(pass, secretKey).toString();
+    const encryptedEmail = CryptoJS.AES.encrypt(email, SECRET_KEY).toString();
+    const encryptedPassword = CryptoJS.AES.encrypt(pass, SECRET_KEY).toString();
     const dataRemember: TypeRemember = {
       email: encryptedEmail,
       password: encryptedPassword,
@@ -76,8 +75,8 @@ export const Login = () => {
       const getData = localStorage.getItem("remember");
       if (getData) {
         const jsonData = JSON.parse(getData);
-        const deEmail = CryptoJS.AES.decrypt(jsonData.email, secretKey).toString(CryptoJS.enc.Utf8);
-        const dePassword = CryptoJS.AES.decrypt(jsonData.password, secretKey).toString(CryptoJS.enc.Utf8);
+        const deEmail = CryptoJS.AES.decrypt(jsonData.email, SECRET_KEY).toString(CryptoJS.enc.Utf8);
+        const dePassword = CryptoJS.AES.decrypt(jsonData.password, SECRET_KEY).toString(CryptoJS.enc.Utf8);
         const deIsCheck = Boolean(jsonData.isCheck);
         setUsername(deEmail); setPassword(dePassword); setIsCheck(deIsCheck);
         form.setFieldsValue({ "email": deEmail, "password": dePassword, "isCheck": deIsCheck });

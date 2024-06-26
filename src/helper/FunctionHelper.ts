@@ -89,10 +89,30 @@ export function GetYearDropdown(startYear: number, endYear?: number): IDropdown<
   return years;
 }
 
-// export const DecryptedJSON = (encryptedData: string) => CryptoJS.AES.decrypt(encryptedData, "Zi4VwqYgHXNbBQRRETetjPZVRHKibAux").toString(CryptoJS.enc.Utf8);
 
-export function DecryptedJSON(encryptedData: string) {
-  const decData = CryptoJS.enc.Base64.parse(encryptedData).toString(CryptoJS.enc.Utf8)
-  const bytes = CryptoJS.AES.decrypt(decData, "Zi4VwqYgHXNbBQRRETetjPZVRHKibAux").toString(CryptoJS.enc.Utf8)
-  return JSON.parse(bytes)
+export function DecryptData(data: string, secretKey: string): object {
+  try {
+    const iv = CryptoJS.enc.Hex.parse(data.substring(0, 32));
+    const ct = CryptoJS.enc.Hex.parse(data.substring(32));
+    const key = CryptoJS.enc.Utf8.parse(secretKey);
+
+    const cipherParams = CryptoJS.lib.CipherParams.create({
+      ciphertext: ct,
+      iv: iv,
+      key: key
+    });
+
+    const decrypted = CryptoJS.AES.decrypt(cipherParams, key, {
+      mode: CryptoJS.mode.CBC,
+      iv: iv
+    });
+
+    const text = decrypted.toString(CryptoJS.enc.Utf8);
+    // console.log("Result : " + text);
+    // return decrypted.toString(CryptoJS.enc.Utf8);
+    return JSON.parse(text)
+  } catch (err) {
+    console.error("Error decrypt : " + err);
+    return {};
+  }
 }
