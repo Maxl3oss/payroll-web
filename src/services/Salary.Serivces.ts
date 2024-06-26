@@ -1,6 +1,11 @@
 import { SECRET_KEY, useAxios } from "@/helper/Axios";
+<<<<<<< HEAD
 import { DecryptData, ErrorResDecryptData } from "@/helper/FunctionHelper";
 import { IResponse } from "@/types/global";
+=======
+import { DecryptData } from "@/helper/FunctionHelper";
+import { IErrorAxios } from "@/types/global";
+>>>>>>> 3cb839e (update make decrypt response)
 
 // Admin
 export async function GetSalary(pageNumber: number, pageSize: number, search: string, month: string, type: number): Promise<IResponse> {
