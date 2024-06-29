@@ -90,11 +90,7 @@ export function GetYearDropdown(startYear: number, endYear?: number): IDropdown<
 }
 
 
-<<<<<<< HEAD
 export function DecryptData(data: string, secretKey: string): IResponse {
-=======
-export function DecryptData(data: string, secretKey: string): object {
->>>>>>> 3cb839e (update make decrypt response)
   try {
     const iv = CryptoJS.enc.Hex.parse(data.substring(0, 32));
     const ct = CryptoJS.enc.Hex.parse(data.substring(32));
@@ -112,7 +108,6 @@ export function DecryptData(data: string, secretKey: string): object {
     });
 
     const text = decrypted.toString(CryptoJS.enc.Utf8);
-<<<<<<< HEAD
     const res = JSON.parse(text);
     res.data = res?.data ? res.data : null;
     return res;
@@ -137,13 +132,4 @@ export function ErrorResDecryptData(error: unknown, secretKey: string): IRespons
     message: error as string,
     data: null,
   };
-=======
-    // console.log("Result : " + text);
-    // return decrypted.toString(CryptoJS.enc.Utf8);
-    return JSON.parse(text)
-  } catch (err) {
-    console.error("Error decrypt : " + err);
-    return {};
-  }
->>>>>>> 3cb839e (update make decrypt response)
 }

@@ -68,7 +68,7 @@ function MainSlip() {
     {
       title: "ลำดับ",
       render: (_, record, idx) => (
-        <span key={record.full_name}>{IndexTable(pagin, idx)}</span>
+        <span key={idx + "-user-" + record.full_name}>{IndexTable(pagin, idx)}</span>
       ),
     },
     {
@@ -162,7 +162,7 @@ function MainSlip() {
             columns={columns}
             dataSource={data}
             pagination={false}
-            rowKey={(record) => record.full_name}
+            rowKey={(record) => record.full_name + "-created_at-" + record.created_at}
           />
         </div>
 
