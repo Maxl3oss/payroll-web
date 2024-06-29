@@ -44,7 +44,7 @@ function FormUser() {
 
   const fetchData = async (id: string, passForm: FormInstance<IUser>, getProfile = false) => {
     const res = getProfile ? await GetProfile() : await GetUserByID(id);
-    if (res && (res.statusCode === 200 && res.taskStatus)) {
+    if (res && (res.statusCode === 200 && res.taskStatus && res?.data)) {
       const arrData: IUser = res.data;
       passForm.setFieldsValue({ ...arrData });
     }
@@ -52,7 +52,7 @@ function FormUser() {
 
   const fetchRole = async () => {
     const res = await GetAllRole();
-    if (res && (res.statusCode === 200 && res.taskStatus)) {
+    if (res && (res.statusCode === 200 && res.taskStatus && res?.data)) {
       const arrData: DataRole[] = res.data;
       const filData = arrData.map((curr) => ({ value: curr.id, label: curr.name }));
       setRole(filData);

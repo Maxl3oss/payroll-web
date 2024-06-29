@@ -34,7 +34,7 @@ export const Login = () => {
     const res = await AuthLogin(dataSend);
     if (res && res.statusCode === 200 && res.taskStatus) {
       message.success("ยินดีต้อนรับ");
-      const token: IToken = res.data.token;
+      const token: IToken = res?.data?.token;
       setUser(res.data.user);
       setTokens(token.access, token.refresh);
 
@@ -80,7 +80,6 @@ export const Login = () => {
         const deIsCheck = Boolean(jsonData.isCheck);
         setUsername(deEmail); setPassword(dePassword); setIsCheck(deIsCheck);
         form.setFieldsValue({ "email": deEmail, "password": dePassword, "isCheck": deIsCheck });
-        console.log(deIsCheck);
       }
     } catch (err) {
       console.error(err);

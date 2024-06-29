@@ -1,4 +1,4 @@
-import { IDropdown, IPagin } from "@/types/global";
+import { IDropdown, IPagin, IResponse } from "@/types/global";
 import { UploadFile } from "antd/lib";
 import dayjs from "dayjs";
 import CryptoJS from "crypto-js";
@@ -90,7 +90,7 @@ export function GetYearDropdown(startYear: number, endYear?: number): IDropdown<
 }
 
 
-export function DecryptData(data: string, secretKey: string): object {
+export function DecryptData(data: string, secretKey: string): IResponse {
   try {
     const iv = CryptoJS.enc.Hex.parse(data.substring(0, 32));
     const ct = CryptoJS.enc.Hex.parse(data.substring(32));
@@ -108,11 +108,28 @@ export function DecryptData(data: string, secretKey: string): object {
     });
 
     const text = decrypted.toString(CryptoJS.enc.Utf8);
-    // console.log("Result : " + text);
-    // return decrypted.toString(CryptoJS.enc.Utf8);
-    return JSON.parse(text)
+    const res = JSON.parse(text);
+    res.data = res?.data ? res.data : null;
+    return res;
   } catch (err) {
-    console.error("Error decrypt : " + err);
-    return {};
+    return {
+      statusCode: 500,
+      taskStatus: false,
+      message: err as string,
+      data: null,
+    };
   }
+}
+
+export function ErrorResDecryptData(error: unknown, secretKey: string): IResponse {
+  if (error instanceof Error && "response" in error) {
+    const axiosError = error as { response?: { data: string } };
+    return DecryptData(axiosError.response?.data || "", secretKey);
+  }
+  throw {
+    statusCode: 500,
+    taskStatus: false,
+    message: error as string,
+    data: null,
+  };
 }

@@ -45,9 +45,7 @@ function ResetPassword() {
     if (res && (res.statusCode === 200 && res.taskStatus)) {
       message.success("สำเร็จ");
       next();
-    } else {
-      message.error(res?.message ?? "");
-    }
+    } 
   }
 
   const ChooseCall = async (curr: number, data: unknown) => {

@@ -34,7 +34,7 @@ function ModalSalary({ dataModal, dataType, setDataModal, openDelete, closeDelet
       handleClose();
       return
     }
-    message.error("ไม่สำเร็จ => " + res.message);
+    message.error("ไม่สำเร็จ => " + res?.message);
   }
 
   const handleClose = () => {

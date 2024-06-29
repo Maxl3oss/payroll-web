@@ -41,11 +41,13 @@ export type Pagin = {
   totalRecord: number;
 }
 
-export type IResponse<T> = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type IResponse<T = any> = {
   statusCode: number;
   taskStatus: boolean;
   data: T;
-  pagin: Pagin;
+  pagin?: Pagin;
+  message: string;
 }
 
 export type IErrorAxios = {

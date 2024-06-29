@@ -37,7 +37,7 @@ function Dashboard() {
     setLoading(true);
     const res = await GetDashboard(year);
     setLoading(false);
-    if (res && res.statusCode === 200 && res.taskStatus) {
+    if (res && res.statusCode === 200 && res.taskStatus && res?.data) {
       setData(res.data);
     }
   }

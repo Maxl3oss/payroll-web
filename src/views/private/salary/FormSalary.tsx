@@ -60,7 +60,7 @@ function FormSalary() {
 
   const fetchSalaryOther = async (type: number) => {
     const res: IResponse<OtherName> = await GetSalaryOther(type);
-    if (res && (res.statusCode === 200 && res.taskStatus)) {
+    if (res && (res.statusCode === 200 && res.taskStatus && res?.data)) {
       // const otherFields = Array.from({ length: 8 }, (_, i) => `other${i + 1}_name`);
       // form.setFieldsValue(
       //   Object.fromEntries([otherFields.map(field => [field, ""])])

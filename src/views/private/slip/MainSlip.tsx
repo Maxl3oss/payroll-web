@@ -58,9 +58,9 @@ function MainSlip() {
     const res = await GetSalaryByUser(userId, pageNumber, pageSize, month);
     month = month === "" ? new Date()?.toISOString() : month;
     setLoading(false);
-    if (res && res.statusCode === 200 && res.taskStatus) {
+    if (res && res.statusCode === 200 && res.taskStatus && res.data && res?.pagin) {
       setData(res.data);
-      setPagin(res.pagin);
+      setPagin(res?.pagin);
     }
   };
 

@@ -36,7 +36,7 @@ function MainUser() {
     setLoading(true);
     const res = await GetAllUser(pageNumber, pageSize, search);
     setLoading(false);
-    if (res && (res.statusCode === 200 && res.taskStatus)) {
+    if (res && (res.statusCode === 200 && res.taskStatus && res?.data)) {
       setData(res.data);
       setPagin({ ...res.pagin as IPagin });
     }
