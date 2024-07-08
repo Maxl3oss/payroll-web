@@ -193,7 +193,6 @@ export interface ISalary {
   salary_other_id: number;
   /** ข้อมูลชื่ออื่นๆ */
   salary_other: ISalaryOther;
-
 }
 
 export interface ISalaryOther {
@@ -206,4 +205,5 @@ export interface ISalaryOther {
   other6_name: string;
   other7_name: string;
   other8_name: string;
+  transferDate: string;
 }

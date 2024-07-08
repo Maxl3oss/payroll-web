@@ -122,7 +122,6 @@ function PDFHospital({ data }: PDFProps) {
 
               <View style={[styles.col, { marginTop: "2mm" }]}>
                 <Text style={[styles.colItem, styles.textBold, { width: "20%" }]}>รวมรายจ่าย</Text>
-                {/* <Text style={[styles.textBold, { width: "20%" }]}></Text> */}
                 <Text style={[styles.colItem, styles.textEnd, styles.textBold, { width: "80%" }]}>{CommaNumber(data.actual_pay, 2)}</Text>
               </View>
 
@@ -133,7 +132,7 @@ function PDFHospital({ data }: PDFProps) {
               </View>
               <View>
                 <Text style={[{ marginTop: "5px", width: "100%" }]}>ข้าราชการถ่ายโอน รพ.สต.</Text>
-                <Text style={[{ marginTop: "5px", width: "100%" }]}>หมายเหตุ: โอนเงินเข้าบัญชีวันที่ 25 {ConvertToDateISOToThai(data.created_at)}</Text>
+                <Text style={[{ marginTop: "5px", width: "100%" }]}>หมายเหตุ: โอนเงินเข้าบัญชีวันที่ {ConvertToDateISOToThai(data.salary_other.transferDate, "DD MMMM BBBB")}</Text>
               </View>
             </View>
           </Page>

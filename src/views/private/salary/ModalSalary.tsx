@@ -21,6 +21,7 @@ type Props = {
 }
 
 function ModalSalary({ dataModal, dataType, setDataModal, openDelete, closeDelete, onFetch }: Props) {
+  const dateNow = dayjs();
   const { message } = App.useApp();
   const [month, setMonth] = useState("");
   const [type, setType] = useState(0);
@@ -77,6 +78,7 @@ function ModalSalary({ dataModal, dataType, setDataModal, openDelete, closeDelet
                   picker="month"
                   onChange={(e) => setMonth(e.toISOString())}
                   value={month !== "" ? dayjs(month) : null}
+                  disabledDate={(d) => dateNow != null && d.isAfter(dateNow) && !d.isSame(dateNow, 'month')}
                 />
               </Form.Item>
               <Form.Item

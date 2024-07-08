@@ -24,6 +24,7 @@ type OtherName = {
 type IFormData = OtherName & {
   month: string;
   type: number;
+  transferDate: string;
 }
 
 type IDataType = {
@@ -116,25 +117,24 @@ function FormSalary() {
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (data: IFormData) => {
     // set data
-    const getField = form.getFieldsValue();
     const dataSend = new FormData();
-    dataSend.append("month", new Date(getField.month).toISOString());
-    dataSend.append("type", (getField?.type ?? 0).toString());
-    dataSend.append("other1_name", getField?.other1_name ?? "");
-    dataSend.append("other2_name", getField?.other2_name ?? "");
-    dataSend.append("other3_name", getField?.other3_name ?? "");
-    dataSend.append("other4_name", getField?.other4_name ?? "");
-    dataSend.append("other5_name", getField?.other5_name ?? "");
-    dataSend.append("other6_name", getField?.other6_name ?? "");
-    dataSend.append("other7_name", getField?.other7_name ?? "");
-    dataSend.append("other8_name", getField?.other8_name ?? "");
+    dataSend.append("month", new Date(data.month).toISOString());
+    dataSend.append("type", (data.type).toString());
+    dataSend.append("transferDate", new Date(data.transferDate).toISOString());
+    dataSend.append("other1_name", data?.other1_name || "");
+    dataSend.append("other2_name", data?.other2_name || "");
+    dataSend.append("other3_name", data?.other3_name || "");
+    dataSend.append("other4_name", data?.other4_name || "");
+    dataSend.append("other5_name", data?.other5_name || "");
+    dataSend.append("other6_name", data?.other6_name || "");
+    dataSend.append("other7_name", data?.other7_name || "");
+    dataSend.append("other8_name", data?.other8_name || "");
     formUpload.fileList.map((file) => {
       dataSend.append("files[]", file as FileType);
     });
-    // console.log(dataSend)
-    // return;
+
     // send data
     setLoading(true);
     const res = await UploadSalary(dataSend);
@@ -189,7 +189,7 @@ function FormSalary() {
             >
               <DatePickerTH
                 picker="month"
-                // onChange={onChangeDate}
+                onChange={(e) => form.setFieldValue("transferDate", dayjs(e).endOf('month'))}
                 disabledDate={(d) => dateNow != null && d.isAfter(dateNow) && !d.isSame(dateNow, 'month')}
               />
             </Form.Item>
@@ -207,6 +207,34 @@ function FormSalary() {
                   setAmountOther(formatName?.label);
                 }}
                 options={dataType}
+              />
+            </Form.Item>
+            <Form.Item
+              label="วันที่โอนเงินเข้าบัญชี"
+              name="transferDate"
+              rules={[
+                { required: true, message: "กรุณาเลือกวันที่โอนเงินเข้าบัญชี" },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (value !== "") {
+                      if (dayjs(value).month() === dayjs(getFieldValue('month')).month()) {
+                        return Promise.resolve();
+                      } else {
+                        return Promise.reject(new Error("กรุณาตรวจสอบเดือนให้ตรงกับช่วงเวลา!"));
+                      }
+                    }
+                  },
+                }),
+              ]}
+              className="w-full lg:w-1/2 xl:w-1/3 pad-main"
+            >
+              <DatePickerTH
+                picker="date"
+                disabledDate={(d) => {
+                  if (!d) return false;
+                  const selectedMonth = dayjs(form.getFieldValue('month')).month();
+                  return d.month() !== selectedMonth;
+                }}
               />
             </Form.Item>
           </div>

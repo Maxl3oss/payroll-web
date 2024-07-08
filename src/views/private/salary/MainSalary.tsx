@@ -61,13 +61,14 @@ function MainSalary() {
     if (res && (res.statusCode === 200 && res.taskStatus && res?.data && res?.pagin)) {
       setData(res.data);
       setPagin(res.pagin);
+      console.log(res)
     }
   }
 
   const fetchDataType = async () => {
     const res = await GetDDLSalaryType();
     if (res && (res.statusCode === 200 && res.taskStatus)) {
-      const dataRes = res?.data as  IDataType[];
+      const dataRes = res?.data as IDataType[];
       const format: IDropdown<number>[] = dataRes.map(curr => ({ value: curr?.id, label: curr?.name }));
       setDataType([{ value: 0, label: "ทั้งหมด" }, ...format]);
     }
@@ -163,6 +164,7 @@ function MainSalary() {
               picker="month"
               onChange={onChangeDate}
               value={formData.month !== "" ? dayjs(formData.month) : dateNow}
+              disabledDate={(d) => dateNow != null && d.isAfter(dateNow) && !d.isSame(dateNow, 'month')}
             />
           </div>
           <div className="w-full lg:w-1/2 xl:w-1/6 pad-main">

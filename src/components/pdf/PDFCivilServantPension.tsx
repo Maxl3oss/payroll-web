@@ -120,7 +120,7 @@ function PDFCivilServantPension({ data }: PDFProps) {
                 <Text style={[styles.colItem, styles.textEnd, styles.textBold, { width: "80%", textDecoration: "underline" }]}>{CommaNumber(data.received, 2)}</Text>
               </View>
               <View>
-                <Text style={[{ marginTop: "5px", width: "100%" }]}>หมายเหตุ: โอนเงินเข้าบัญชีวันที่ 23 {ConvertToDateISOToThai(data.created_at)}</Text>
+                <Text style={[{ marginTop: "5px", width: "100%" }]}>หมายเหตุ: โอนเงินเข้าบัญชีวันที่ {ConvertToDateISOToThai(data.salary_other.transferDate, "DD MMMM BBBB")}</Text>
               </View>
             </View>
           </Page>
