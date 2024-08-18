@@ -2,7 +2,7 @@ import DatePickerTH from "@/components/DatePickerTH";
 import UploadDragger from "@/components/UploadDragger";
 import { ValidateFileType } from "@/helper/FunctionHelper";
 import { GetDDLSalaryType, GetSalaryOther, UploadSalary } from "@/services/Salary.Serivces";
-import { IDropdown, IResponse, SalaryTypeName } from "@/types/global";
+import { IDropdown, SalaryTypeName } from "@/types/global";
 import { App, Button, Form, GetProp, Select, UploadProps } from "antd";
 import { Input, UploadFile } from "antd/lib";
 import dayjs from "dayjs";
@@ -52,29 +52,31 @@ function FormSalary() {
 
 
   const fetchDataType = async () => {
-    const res: IResponse<IDataType[]> = await GetDDLSalaryType();
+    const res = await GetDDLSalaryType();
     if (res && (res.statusCode === 200 && res.taskStatus)) {
-      const format: IDropdown<number>[] = res.data.map(curr => ({ value: curr?.id, label: curr?.name }));
+      const resData = res.data as IDataType[];
+      const format: IDropdown<number>[] = resData.map(curr => ({ value: curr?.id, label: curr?.name }));
       setDataType(format);
     }
   };
 
   const fetchSalaryOther = async (type: number) => {
-    const res: IResponse<OtherName> = await GetSalaryOther(type);
+    const res = await GetSalaryOther(type);
     if (res && (res.statusCode === 200 && res.taskStatus && res?.data)) {
       // const otherFields = Array.from({ length: 8 }, (_, i) => `other${i + 1}_name`);
       // form.setFieldsValue(
       //   Object.fromEntries([otherFields.map(field => [field, ""])])
       // );
+      const resData = res.data as OtherName
       form.setFieldsValue({
-        other1_name: res.data.other1_name,
-        other2_name: res.data.other2_name,
-        other3_name: res.data.other3_name,
-        other4_name: res.data.other4_name,
-        other5_name: res.data.other5_name,
-        other6_name: res.data.other6_name,
-        other7_name: res.data.other7_name,
-        other8_name: res.data.other8_name,
+        other1_name: resData.other1_name,
+        other2_name: resData.other2_name,
+        other3_name: resData.other3_name,
+        other4_name: resData.other4_name,
+        other5_name: resData.other5_name,
+        other6_name: resData.other6_name,
+        other7_name: resData.other7_name,
+        other8_name: resData.other8_name,
       });
     }
   }
@@ -149,7 +151,7 @@ function FormSalary() {
       return;
     }
 
-    message.error("บันทึกข้อมูลไม่สำเร็จ! => " + res?.message ?? "" + "!");
+    message.error("บันทึกข้อมูลไม่สำเร็จ! => " + res?.message || "" + "!");
   };
 
   const reset = () => {

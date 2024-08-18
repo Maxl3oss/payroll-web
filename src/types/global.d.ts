@@ -26,7 +26,7 @@ export type IUser = {
   taxid: string;
   mobile: string;
   role_id: number;
-  role: Role;
+  role: IRole;
 }
 
 export type IToken = {
@@ -41,8 +41,8 @@ export type Pagin = {
   totalRecord: number;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type IResponse<T = any> = {
+/* @typescript-eslint/no-explicit-any disable */
+export type IResponse<T = unknown> = {
   statusCode: number;
   taskStatus: boolean;
   data: T;

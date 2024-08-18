@@ -4,7 +4,7 @@ import { Form, Input, Button, Image, Alert, App, Checkbox } from "antd";
 import Banner from "@/assets/images/banners/banner.jpg"
 import { AuthLogin } from "@/services/Auth.Services";
 import useAuthStore from "@/store/authStore";
-import { IToken } from "@/types/global";
+import { IToken, IUser } from "@/types/global";
 import CryptoJS from "crypto-js";
 import { SECRET_KEY } from "@/helper/Axios";
 
@@ -34,8 +34,8 @@ export const Login = () => {
     const res = await AuthLogin(dataSend);
     if (res && res.statusCode === 200 && res.taskStatus) {
       message.success("ยินดีต้อนรับ");
-      const token: IToken = res?.data?.token;
-      setUser(res.data.user);
+      const { token, user } = res.data as { token: IToken, user: IUser }
+      setUser(user);
       setTokens(token.access, token.refresh);
 
       if (isCheck) {

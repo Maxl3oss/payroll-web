@@ -48,7 +48,7 @@ function MainSlip() {
   const fetchDataType = async () => {
     const res = await GetDDLSalaryType();
     if (res && (res.statusCode === 200 && res.taskStatus)) {
-      const dataRes: IDataType[] = res?.data;
+      const dataRes = res.data as IDataType[];
       const format: IDropdown<number>[] = dataRes.map(curr => ({ value: curr?.id, label: curr?.name }));
       setDataType([{ value: 0, label: "ทั้งหมด" }, ...format]);
     }
@@ -59,8 +59,9 @@ function MainSlip() {
     month = month === "" ? new Date()?.toISOString() : month;
     setLoading(false);
     if (res && res.statusCode === 200 && res.taskStatus && res.data && res?.pagin) {
-      setData(res.data);
+      setData(res.data as ISalary[]);
       setPagin(res?.pagin);
+      console.log(res)
     }
   };
 

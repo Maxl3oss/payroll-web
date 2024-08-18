@@ -1,6 +1,5 @@
 import { SECRET_KEY, useAxios } from "@/helper/Axios";
 import { DecryptData, ErrorResDecryptData } from "@/helper/FunctionHelper";
-import { IResponse } from "@/types/global";
 
 // admin 
 export async function GetAllUser(pageNumber: number, pageSize: number, search: string) {
@@ -31,7 +30,7 @@ export async function DeleteUserByID(userId: string) {
 }
 
 // role 
-export async function GetAllRole(): Promise<IResponse> {
+export async function GetAllRole() {
   try {
     const res = await useAxios.get(`/user/get-role`);
     return DecryptData(res.data, SECRET_KEY);
@@ -40,7 +39,7 @@ export async function GetAllRole(): Promise<IResponse> {
   }
 }
 
-export async function UpdatePassByAdmin(uid: string, data: unknown): Promise<IResponse> {
+export async function UpdatePassByAdmin(uid: string, data: unknown) {
   try {
     const res = await useAxios.patch(`/user/update-pass/${uid}`, data);
     return DecryptData(res.data, SECRET_KEY);

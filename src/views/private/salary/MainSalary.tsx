@@ -59,9 +59,8 @@ function MainSalary() {
     const res = await GetSalary(pageNumber, pageSize, dataForm.search, dataForm.month, dataForm.type);
     setLoading(false);
     if (res && (res.statusCode === 200 && res.taskStatus && res?.data && res?.pagin)) {
-      setData(res.data);
+      setData(res.data as ISalary[]);
       setPagin(res.pagin);
-      console.log(res)
     }
   }
 

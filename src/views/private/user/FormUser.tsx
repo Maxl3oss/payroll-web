@@ -45,7 +45,7 @@ function FormUser() {
   const fetchData = async (id: string, passForm: FormInstance<IUser>, getProfile = false) => {
     const res = getProfile ? await GetProfile() : await GetUserByID(id);
     if (res && (res.statusCode === 200 && res.taskStatus && res?.data)) {
-      const arrData: IUser = res.data;
+      const arrData = res.data as IUser;
       passForm.setFieldsValue({ ...arrData });
     }
   }
@@ -53,7 +53,7 @@ function FormUser() {
   const fetchRole = async () => {
     const res = await GetAllRole();
     if (res && (res.statusCode === 200 && res.taskStatus && res?.data)) {
-      const arrData: DataRole[] = res.data;
+      const arrData = res.data as DataRole[];
       const filData = arrData.map((curr) => ({ value: curr.id, label: curr.name }));
       setRole(filData);
     }
@@ -63,7 +63,8 @@ function FormUser() {
     const res = (Boolean(uid) === true) ? await UpdateUser(uid, value) : isProfile ? await UpdateUser(user?.id ?? "", value) : await CreateUser(value);
     if (res && (res.statusCode === 200 && res.taskStatus)) {
       message.success(Boolean(uid) === true ? "แก้ไขข้อมูลสำเร็จ!" : "เพิ่มข้อมูลผู้ใช้งานสำเร็จ");
-      navigate("/user")
+      console.table(user)
+      user?.role?.name === "admin" ? navigate("/user") : navigate("/profile")
     } else {
       message.error("ไม่สำเร็จ => " + res?.message || "");
     }
